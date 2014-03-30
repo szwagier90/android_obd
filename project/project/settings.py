@@ -58,7 +58,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'android_odb',
+        'NAME': 'android_obd',
         'USER': 'root',
         'PASSWORD': 'toor',
         'HOST': '',
