@@ -1,0 +1,50 @@
+{% extends "android_obd/base.html" %}
+
+{% block title %}Witaj w EndoCarMondo{% endblock title %}
+
+{% block style %}
+		<style type="text/css">
+			body {
+			  padding-top: 50px;
+			  padding-bottom: 20px;
+			}
+		</style>
+{% endblock style %}
+
+{% block content %}
+		<div class="jumbotron">
+			<div class="container">
+				<h1>EndoCarMondo</h1>
+				<p><strong>Rejestruj</strong> trasy<br />
+				<strong>Rywalizuj</strong> ze znajomymi<br />
+				<strong>Analizuj</strong> parametry</p>
+				<p><a href="{% url 'register' %}" class="btn btn-primary btn-lg" role="button">Zarejestruj się... &raquo;</a></p>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h4><center>Ostatnio dodane przejazdy</center></h4>
+					<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+					<p><a class="btn btn-default" href="{% url 'more_recent' %}" role="button">Zobacz więcej &raquo;</a></p>
+				</div>
+				<div class="col-md-4">
+					<h4><center>Najwięcej dodanych przejazdów</center></h4>
+					<p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+					<p><a class="btn btn-default" href="{% url 'more_added' %}" role="button">Zobacz więcej &raquo;</a></p>
+				</div>
+				<div class="col-md-4">
+					<h4><center>Największy dystans</center></h4>
+					<p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+					<p><a class="btn btn-default" href="{% url 'more_longest' %}" role="button">Zobacz więcej &raquo;</a></p>
+				</div>
+				<div class="col-md-4">
+					<h4><center>Najmniejsze średnie spalanie</center></h4>
+					<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+					<p><a class="btn btn-default" href="{% url 'more_fuel' %}" role="button">Zobacz więcej &raquo;</a></p>
+				</div>
+			</div>
+		</div>
+
+{% endblock content %}
