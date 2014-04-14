@@ -1,0 +1,60 @@
+{% extends "android_obd/base.html" %}
+
+{% block title %}Wybrana trasa{% endblock title %}
+
+{% block style %}
+		<style type="text/css">
+			body {
+			  padding-top: 50px;
+			  padding-bottom: 20px;
+			}
+		</style>
+{% endblock style %}
+
+{% block content %}
+
+    <div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <div class="col-xs-12 col-sm-9">
+          <div class="jumbotron">
+            <h1>Hello, world!</h1>
+            <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
+          </div>
+          <div class="row">
+            <div class="col-6 col-sm-6 col-lg-4">
+              <h2>Mapa</h2>
+		<div>
+			
+		</div>
+		<script src="map.js"></script>
+		<div id="map-canvas" style="width: 40%; height: 40%; border: 2px solid black; background: gray;">   
+        		<!-- tu będzie mapa -->  
+    		</div> 
+            </div><!--/span-->
+            <div class="col-6 col-sm-6 col-lg-4">
+              <h2>Wykres</h2>
+            </div><!--/span-->
+            <div class="col-6 col-sm-6 col-lg-4">
+              <h2>Miejsce na video</h2>
+            </div><!--/span-->
+          </div><!--/row-->
+        </div><!--/span-->
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+          <div class="list-group">
+            <a href="#" class="list-group-item active">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+          </div>
+        </div><!--/span-->
+      </div><!--/row-->
+{% endblock content %}
+
