@@ -1,4 +1,5 @@
 {% extends "android_obd/base.html" %}
+{% load static %}
 
 {% block title %}Wybrana trasa{% endblock title %}
 
@@ -28,7 +29,7 @@
 		<div>
 			
 		</div>
-		<script src="map.js"></script>
+		<script src="{% static 'android_obd/js/map.js' %}"></script>
 		<div id="map-canvas" style="width: 40%; height: 40%; border: 2px solid black; background: gray;">   
         		<!-- tu będzie mapa -->  
     		</div> 
