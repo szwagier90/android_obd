@@ -64,6 +64,7 @@ DATABASES = {
         'PASSWORD': 'toor',
         'HOST': '',
         'PORT': '',
+        'OPTIONS': {'charset': 'utf8'},
     }
 }
 
