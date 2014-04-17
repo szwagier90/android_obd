@@ -1,7 +1,7 @@
-<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvBedZY7MOZPqbGxmkBctmNfm2ooi9xls&sensor=true">
-    </script>
-    <script type="text/javascript">
+//<script type="text/javascript"
+     // src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvBedZY7MOZPqbGxmkBctmNfm2ooi9xls&sensor=true">
+   // </script>
+   // <script type="text/javascript">
 	  var directionsDisplay;
 	  var directionsService = new google.maps.DirectionsService();
 	  var map;
@@ -103,4 +103,4 @@
 	  });
 	}
 	  google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
+  //  </script>
