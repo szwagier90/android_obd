@@ -21,10 +21,12 @@
 		//spalanie: liczba
 		//predkosc: liczba
 		// itd...
-		
-		var value = []
-		value.push(new google.maps.LatLng(38.7699298, -120.4469157),new google.maps.LatLng(36.7699298, -120.4469157));
-		value1 = new google.maps.LatLng(37.7699298, -121.4469157);
+
+		//var aaa = [['Y',-121.44],['X',37.78]];
+		var value = [];
+		value.push(new google.maps.LatLng(38.7699298, -120.4469157),
+			new google.maps.LatLng(36.7699298, -120.4469157));
+		value1 = new google.maps.LatLng(aaa[0].X ,aaa[0].Y);// -121.4469157);
 		value0 = new google.maps.LatLng(37.7699298, -118.4469157);
 		//*************************************************************************************
 		//wspolrzedne
