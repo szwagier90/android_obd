@@ -5,7 +5,7 @@
 	  var directionsDisplay;
 	  var directionsService = new google.maps.DirectionsService();
 	  var map;
-	  var waypts;
+	  var waypts = [];
 	  
       function initialize() {
 		directionsDisplay = new google.maps.DirectionsRenderer();
@@ -21,29 +21,31 @@
 		//spalanie: liczba
 		//predkosc: liczba
 		// itd...
+		var i;
+		var value; 
+		value = [];
 		
-		var value = []
-		value.push(new google.maps.LatLng(38.7699298, -120.4469157),new google.maps.LatLng(36.7699298, -120.4469157));
-		value1 = new google.maps.LatLng(37.7699298, -121.4469157);
-		value0 = new google.maps.LatLng(37.7699298, -118.4469157);
+		var dane;
+		dane = [];
+		value.push(new google.maps.LatLng(aaa[0].X,aaa[0].Y));
+		dane.push(aaa[0]);
+		//aaa[] jest tablica z danymi :)
+		for(i=1;i<aaa.length-1;i++)
+		{
+			value.push(new google.maps.LatLng(aaa[i].X,aaa[i].Y));
+			waypts.push({location:value[i],stopover:false});
+			dane.push(aaa[i]);
+		}
+		
+		value.push(new google.maps.LatLng(aaa[aaa.length-1].X,aaa[aaa.length-1].Y));
+		dane.push(aaa[aaa.length-1]);
 		//*************************************************************************************
-		//wspolrzedne
-		waypts = [
-			{location:value[0], stopover:false},
-			{location:value0,stopover:false},
-			{location:value1, stopover:false},
-			{location:value[1],stopover:false}]
-		start = new google.maps.LatLng(37.7699298, -122.4469157);
-		end = new google.maps.LatLng(40.7699298, -122.4469157);
+		start = value[0];//new google.maps.LatLng(aaa[0].X, aaa[0].Y);
+		end = value[aaa.length-1];//new google.maps.LatLng(aaa[5].X, aaa[5].Y);
 		
 		calcRoute(waypts,start,end);
 		waypts.unshift({location:start, stopover:false})
 		waypts.push({location:end,stopover:false})
-		
-		//pozostale dane
-		var dane = []
-		dane.push({spalanie:30,predkosc:45}, {spalanie:17,predkosc:14},{spalanie:8,predkosc:4},
-				{spalanie:104,predkosc:106},{spalanie:8,predkosc:4},{spalanie:104,predkosc:106});
 		
 		//*************************************************************************************
 		var contentString = "aaa";
@@ -76,6 +78,7 @@
 			map: map
 		});
 
+		
             var contentString = '<p>wspolrzedne: '+way+'<p>spalanie: '+spalanie+'<p> predkosc: '+predkosc;
 
             google.maps.event.addListener(marker, "mouseover", function () {
