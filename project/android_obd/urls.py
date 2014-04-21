@@ -9,6 +9,4 @@ urlpatterns = patterns('',
 	url(r'^register/$', views.index, name='more_added'),
 	url(r'^register/$', views.index, name='more_longest'),
 	url(r'^register/$', views.index, name='more_fuel'),
-	#
-	url(r'^debug/$', views.debug, name='debug'),
 )
