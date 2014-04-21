@@ -81,8 +81,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS 
+TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + (
+    "django.core.context_processors.request",
+)
 
 # Static files (CSS, JavaScript, Images)
 # 
-
 STATIC_URL = '/static/'
