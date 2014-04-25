@@ -28,10 +28,6 @@ def register(request):
 	return render(request, 'android_obd/register.html', 
 		{'form': form})
 
-def logout_view(request):
-	logout(request)
-	return HttpResponseRedirect(reverse('index'))
-
 def route(request):
 	#slownik = {"wsp": [['Y',-121.44],['X',37.78]]}
 	#slownik = {"wsp": [['Y',-121.4],['X',37.7699298]]}
