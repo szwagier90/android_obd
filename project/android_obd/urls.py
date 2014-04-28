@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url
+from android_obd.forms import MyAuthenticationForm
 
 
 urlpatterns = patterns('android_obd.views',
@@ -12,6 +13,6 @@ urlpatterns = patterns('android_obd.views',
 )
 
 urlpatterns += patterns('django.contrib.auth.views',
-	url(r'^login/$', 'login', {'template_name': 'android_obd/home.html'}, name='login'),
+	url(r'^login/$', 'login', {'template_name': 'android_obd/login.html', 'authentication_form': MyAuthenticationForm}, name='login'),
 	url(r'^logout/$', 'logout', {'next_page': '/', 'template_name': 'android_obd/home.html'}, name='logout'),
 )

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
 class MyUserCreationForm(UserCreationForm):
@@ -57,3 +57,16 @@ class MyUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class MyAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(label=u"Login", max_length=254,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Login', 'required': True,}),
+        required=True)
+    password = forms.CharField(label="Password", 
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Hasło', 'required': True,}),
+        required=True)
+
+    error_messages = {
+        'invalid_login': u"Wprowadź poprawnie login i hasło. Pamiętaj, że oba pola rozróżniają wielkość liter.",
+        'inactive': u"To konto jest nieaktywne.",
+    }
