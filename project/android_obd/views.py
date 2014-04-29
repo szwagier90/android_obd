@@ -11,6 +11,8 @@ def index(request):
 	return render(request, 'android_obd/home.html', {})
 
 def register(request):
+	if request.user.is_authenticated():
+		return HttpResponseRedirect(reverse('index'))
 	if request.method == 'POST':
 		form = MyUserCreationForm(request.POST)
 		if form.is_valid():
