@@ -11,6 +11,13 @@
 		<title>{% block title %}{% endblock %}</title>
 
 		<link href="{% static 'android_obd/css/bootstrap.min.css' %}" rel="stylesheet">
+		
+		<style type="text/css">
+			body {
+			  padding-top: 50px;
+			  padding-bottom: 20px;
+			}
+		</style>		
 {% block style %}{% endblock %}
 	</head>
 	<body {% block body_mod %}{% endblock %}>
