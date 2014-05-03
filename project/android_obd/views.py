@@ -3,12 +3,18 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from android_obd.forms import MyUserCreationForm
+from django.views.generic import DetailView
 
 from django.utils import simplejson
 
+class ProfileDetail(DetailView):
+	model = User
+	template_name = 'android_obd/profile_detail_view.html'
+
 def index(request):
-	return render(request, 'android_obd/home.html', {})
+	return render(request, 'android_obd/home.html')
 
 def register(request):
 	if request.user.is_authenticated():
@@ -21,7 +27,7 @@ def register(request):
 			password = form.cleaned_data['password2']
 			user = authenticate(username=username, password=password)
 			login(request, user)
-			return HttpResponseRedirect(reverse('index'))
+			return HttpResponseRedirect(reverse('profile', kwargs={'slug': username}))
 		else:
 			return render(request, 'android_obd/register.html', 
 				{'form': form})

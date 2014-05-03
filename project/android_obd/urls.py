@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required
 from android_obd.forms import MyAuthenticationForm
+from android_obd.views import ProfileDetail
 
 
 urlpatterns = patterns('android_obd.views',
@@ -13,6 +15,10 @@ urlpatterns = patterns('android_obd.views',
 )
 
 urlpatterns += patterns('django.contrib.auth.views',
-	url(r'^login/$', 'login', {'template_name': 'android_obd/login.html', 'authentication_form': MyAuthenticationForm}, name='login'),
-	url(r'^logout/$', 'logout', {'next_page': '/', 'template_name': 'android_obd/home.html'}, name='logout'),
+	url(r'^accounts/login/$', 'login', {'template_name': 'android_obd/login.html', 'authentication_form': MyAuthenticationForm}, name='login'),
+	url(r'^accounts/logout/$', 'logout', {'next_page': '/', 'template_name': 'android_obd/home.html'}, name='logout'),
+)
+	
+urlpatterns += patterns('',
+	url(r'^profile/(?P<slug>[\w.@+-]+)/$', login_required(ProfileDetail.as_view(slug_field='username')), name='profile'),
 )
