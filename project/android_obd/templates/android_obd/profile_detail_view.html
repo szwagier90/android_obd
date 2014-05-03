@@ -6,36 +6,37 @@
 <div class="jumbotron">
 	<div class="container">
 		<div class="panel panel-info">
-			<h2>Profil użytkownika: {{ object.username }}</h2>
+			<div class="panel-heading">
+				<h3 class="panel-title">Profil użytkownika: <b>{{ object.username }}</b></h3>
+			</div>
+			<div class="panel-body">
 			<dl class="dl-horizontal">
-			<dt>Imię</dt>
+				<dt>Imię</dt>
 	{% if object.first_name %}
-				<dd>{{ object.first_name }}</dd>
+					<dd>{{ object.first_name }}</dd>
 	{% else %}
-				<dd>-</dd>
+					<dd>-</dd>
 	{% endif %}
-			<dt>Nazwisko</dt>
+				<dt>Nazwisko</dt>
 	{% if object.last_name %}
-				<dd>{{ object.last_name }}</dd>
+					<dd>{{ object.last_name }}</dd>
 	{% else %}
-				<dd>-</dd>
+					<dd>-</dd>
 	{% endif %}
-			<dt>E-Mail</dt>
+				<dt>E-Mail</dt>
 	{% if object.email %}
-				<dd>{{ object.email }}</dd>
+					<dd>{{ object.email }}</dd>
 	{% else %}
-				<dd>-</dd>
+					<dd>-</dd>
 	{% endif %}
-			<dt>Konto założone</dt>
-				<dd>{{ object.date_joined }}</dd>
-			</dl>
+				<dt>Konto założone</dt>
+					<dd>{{ object.date_joined }}</dd>
+					</dl>
 {% ifequal user.username object.username %}
-	        <p><a href="/profile_edit/" class="btn btn-primary">Edytuj profil</a></p>
+		        <p><a href="/profile_edit/" class="btn btn-primary">Edytuj profil</a></p>
 {% endifequal %}
+			</div>
 		</div>
 	</div>
 </div>
 {% endblock %}
-
-{% comment %}
-{% endcomment %}
