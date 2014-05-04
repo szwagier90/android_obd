@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from android_obd.forms import MyUserCreationForm
 from django.views.generic import DetailView
 
@@ -53,3 +56,18 @@ def route(request):
 	json_list = simplejson.dumps(lista)
 	
 	return render(request, 'android_obd/route.html', {"wsp":json_list})
+
+@login_required
+def profiles(request):
+	info = []
+	username = request.POST.get('username', '')
+	if username:
+		try:
+			user = User.objects.get(username=username)
+			return HttpResponseRedirect(reverse('profile', kwargs={'slug': username}))
+		except User.DoesNotExist:
+			info.append('Taki użytkownik nie istnieje')
+
+	recent_users_list = User.objects.order_by('-date_joined')[:10]
+	return render(request, 'android_obd/profiles.html',
+		{'recent_users_list': recent_users_list, 'info': info})

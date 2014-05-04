@@ -1,0 +1,56 @@
+{% extends "android_obd/base.html" %}
+{% load static %}
+
+{% block title %}Witaj w EndoCarMondo{% endblock title %}
+
+{% block style %}
+		<link href="{% static 'android_obd/css/login.css' %}" rel="stylesheet">		
+{% endblock style %}
+
+{% block content %}
+		<div class="jumbotron">
+			<div class="container">
+				<div class="col-lg-4 col-md-offset-4">
+	{% if info %}
+					<div class="alert alert-danger">
+	                   {% for i in info %}
+	                   {{ i }}
+	                   {% endfor %}
+	               </div>
+    {% endif %}
+					<form role="form" method="post" action="{% url 'profiles' %}">
+						<div class="input-group">
+							<input type="text" class="form-control" name="username" type="text" placeholder="Nazwa Użytkownika">
+							<span class="input-group-btn">
+	{% csrf_token %}
+								<button class="btn btn-default" type="submit">Szukaj!</button>
+							</span>
+					    </div><!-- /input-group -->
+					</form>
+				</div><!-- /.col-lg-6 -->
+				<div class="col-md-4 col-md-offset-4">
+					<h4><center>Ostatnio zarejestrowani użytkownicy</center></h4>
+					<table class="table table-bordered table-condensed table-striped">
+						<colgroup>
+							<col class="span2">
+							<col class="span1">
+						</colgroup>
+						<thead>
+							<tr>
+								<th><center>Użytkownik</center></th>
+								<th><center>Dołączył</center></th>
+							</tr>
+						</thead>
+						<tbody>
+	{% for user in recent_users_list %}
+							<tr>
+								<td><a href="{% url 'profile' slug=user.username %}">{{ user.username }}</a></td>
+								<td>{{ user.date_joined }}</td>
+							</tr>
+	{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+{% endblock content %}
