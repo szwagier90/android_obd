@@ -1,11 +1,12 @@
 {% url 'index' as index_url %}
 {% url 'register' as register_url %}
+{% url 'routes' as routes_url %}
 
 					<ul class="nav navbar-nav">
 						<li{% ifequal request.path index_url %} class="active"{% endifequal %}><a href="{% url 'index' %}">Strona Główna</a></li>
 {% if not user.is_authenticated %}
 						<li{% ifequal request.path register_url %} class="active"{% endifequal %}><a href="{% url 'register' %}">Zarejestruj</a></li>
 {% else %}
-	admjfhajkfhaksjfhsakdjh
+						<li{% ifequal request.path routes_url %} class="active"{% endifequal %}> <a href="{% url 'routes' %}">Moje trasy</a></li>
 {% endif %}
 					</ul>
