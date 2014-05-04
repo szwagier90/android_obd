@@ -1,0 +1,36 @@
+{% extends "android_obd/base.html" %}
+
+{% block title %}{{ object.username }} - Profil{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+	<div class="container">
+  <div class="bs-example">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>wspX</th>
+          <th>wspY</th>
+          <th>predkosc</th>
+	  <th>spalanie</th>
+        </tr>
+      </thead>
+      <tbody>
+	{% for cos in dane %}
+        <tr>
+          <td>{{ cos.X }}</td>
+          <td>{{ cos.Y }}</td>
+          <td>{{ cos.spalanie }}</td>
+	  <td>{{ cos.predkosc }}</td>
+          <td><a href="/route/{{ cos.id }}/">klik</a></td>
+        </tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div><!-- /example -->	
+	</div>
+</div>
+{% endblock %}
+
+{% comment %}
+{% endcomment %}

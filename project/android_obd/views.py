@@ -12,6 +12,9 @@ from django.views.generic import DetailView
 
 from django.utils import simplejson
 
+from django.contrib.auth.decorators import login_required
+
+
 class ProfileDetail(DetailView):
 	model = User
 	template_name = 'android_obd/profile_detail_view.html'
@@ -39,7 +42,21 @@ def register(request):
 	return render(request, 'android_obd/register.html', 
 		{'form': form})
 
-def route(request):
+@login_required
+def all_routes(request):
+		
+	lista =  [
+        {'id':1,'X':37.60,'Y':-121.44,'spalanie':0,'predkosc':0},
+        {'id':2,'X':37.7699298,'Y':-118.4469157,'spalanie': 4,'predkosc':78},
+        {'id':3,'X':36.7699298,'Y':-120.4469157,'spalanie': 7,'predkosc':56},
+        {'id':4,'X':38.7699298,'Y':-120.4469157,'spalanie': 8,'predkosc':30},
+        {'id':5,'X':37.7699298,'Y':-122.4469157,'spalanie':12},
+        {'id':6,'X':40.7699298,'Y':-122.4469157,'spalanie':21,'predkosc':185}
+        ]	
+	return render(request, 'android_obd/all_routes.html',{"dane":lista})
+
+
+def route(request, id=5):
 	#slownik = {"wsp": [['Y',-121.44],['X',37.78]]}
 	#slownik = {"wsp": [['Y',-121.4],['X',37.7699298]]}
 
@@ -55,7 +72,7 @@ def route(request):
 	#slownik = {"wsp":[-121.44, 37.77]}
 	json_list = simplejson.dumps(lista)
 	
-	return render(request, 'android_obd/route.html', {"wsp":json_list})
+	return render(request, 'android_obd/route.html', {"wsp":json_list,"my_id":id })
 
 @login_required
 def profiles(request):

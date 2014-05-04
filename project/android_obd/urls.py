@@ -7,12 +7,13 @@ from android_obd.views import ProfileDetail
 urlpatterns = patterns('android_obd.views',
 	url(r'^$', 'index', name='index'),
 	url(r'^register/$', 'register', name='register'),
-	url(r'^route/$', 'route', name='route'),
+	url(r'^route/(?P<id>[0-9]+)/$', 'route', name='route'),
 	url(r'^profiles/$', 'profiles', name='profiles'),
 	url(r'^register/$', 'index', name='more_recent'),
 	url(r'^register/$', 'index', name='more_added'),
 	url(r'^register/$', 'index', name='more_longest'),
 	url(r'^register/$', 'index', name='more_fuel'),
+	url(r'^routes/$', 'all_routes', name='routes'),
 )
 
 urlpatterns += patterns('django.contrib.auth.views',
