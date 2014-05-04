@@ -12,6 +12,7 @@ urlpatterns = patterns('android_obd.views',
 	url(r'^register/$', 'index', name='more_added'),
 	url(r'^register/$', 'index', name='more_longest'),
 	url(r'^register/$', 'index', name='more_fuel'),
+	url(r'^routes/$', 'all_routes', name='routes'),
 )
 
 urlpatterns += patterns('django.contrib.auth.views',
