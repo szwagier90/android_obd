@@ -31,21 +31,17 @@
 				<div class="col-md-4 col-md-offset-4">
 					<h4><center>Ostatnio zarejestrowani użytkownicy</center></h4>
 					<table class="table table-bordered table-condensed table-striped">
-						<colgroup>
-							<col class="span2">
-							<col class="span1">
-						</colgroup>
 						<thead>
 							<tr>
-								<th><center>Użytkownik</center></th>
-								<th><center>Dołączył</center></th>
+								<th class="col-md-2"><center>Użytkownik</center></th>
+								<th class="col-md-3"><center>Dołączył</center></th>
 							</tr>
 						</thead>
 						<tbody>
 	{% for user in recent_users_list %}
 							<tr>
 								<td><a href="{% url 'profile' slug=user.username %}">{{ user.username }}</a></td>
-								<td>{{ user.date_joined }}</td>
+								<td>{{ user.date_joined|timesince }} temu</td>
 							</tr>
 	{% endfor %}
 						</tbody>
