@@ -4,31 +4,31 @@
 
 {% block content %}
 <div class="jumbotron">
-	<div class="container">
-  <div class="bs-example">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>wspX</th>
-          <th>wspY</th>
-          <th>predkosc</th>
-	  <th>spalanie</th>
-        </tr>
-      </thead>
-      <tbody>
-	{% for cos in dane %}
-        <tr>
-          <td>{{ cos.X }}</td>
-          <td>{{ cos.Y }}</td>
-          <td>{{ cos.spalanie }}</td>
-	  <td>{{ cos.predkosc }}</td>
-          <td><a href="/route/{{ cos.id }}/">klik</a></td>
-        </tr>
-	{% endfor %}
-      </tbody>
-    </table>
-  </div><!-- /example -->	
-	</div>
+    <div class="container">
+        <div class="bs-example">
+            <h4><center>Twoje trasy</center></h4>
+            <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Nr</th>
+                        <th>Video Link</th>
+                        <th>Tags</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+    {% for r in records %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ r.video_link }}</td>
+                        <td>{{ r.tags.all | join:", " }}</td>
+                        <td><a href="/route/{{ cos.id }}/">klik</a></td>
+                    </tr>
+    {% endfor %}
+                </tbody>
+            </table>
+        </div><!-- /example --> 
+    </div>
 </div>
 {% endblock %}
 

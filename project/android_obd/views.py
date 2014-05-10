@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from android_obd.forms import MyUserCreationForm
+from android_obd.models import Record
 from django.views.generic import DetailView
 
 from django.utils import simplejson
@@ -44,16 +45,8 @@ def register(request):
 
 @login_required
 def all_routes(request):
-		
-	lista =  [
-        {'id':1,'X':37.60,'Y':-121.44,'spalanie':0,'predkosc':0},
-        {'id':2,'X':37.7699298,'Y':-118.4469157,'spalanie': 4,'predkosc':78},
-        {'id':3,'X':36.7699298,'Y':-120.4469157,'spalanie': 7,'predkosc':56},
-        {'id':4,'X':38.7699298,'Y':-120.4469157,'spalanie': 8,'predkosc':30},
-        {'id':5,'X':37.7699298,'Y':-122.4469157,'spalanie':12},
-        {'id':6,'X':40.7699298,'Y':-122.4469157,'spalanie':21,'predkosc':185}
-        ]	
-	return render(request, 'android_obd/all_routes.html',{"dane":lista})
+	records = Record.objects.filter(user=request.user)
+	return render(request, 'android_obd/all_routes.html',{"records": records})
 
 
 def route(request, id=5):
