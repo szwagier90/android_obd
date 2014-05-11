@@ -27,6 +27,21 @@
     {% endfor %}
                 </tbody>
             </table>
+          <div class="pagination">
+            <span class="step-links">
+    {% if records.has_previous %}
+             <a href="?page={{ records.previous_page_number }}">&laquo</a>
+    {% endif %}
+
+            <span class="current">
+              {{ records.number }} / {{ records.paginator.num_pages }}
+            </span>
+
+    {% if records.has_next %}
+            <a href="?page={{ records.next_page_number }}">&raquo</a>
+    {% endif %}
+         </span>
+</div>
         </div><!-- /example --> 
     </div>
 </div>

@@ -15,6 +15,7 @@ from django.utils import simplejson
 
 from django.contrib.auth.decorators import login_required
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class ProfileDetail(DetailView):
 	model = User
@@ -45,8 +46,20 @@ def register(request):
 
 @login_required
 def all_routes(request):
-	records = Record.objects.filter(user=request.user)
-	return render(request, 'android_obd/all_routes.html',{"records": records})
+        records_list = Record.objects.filter(user=request.user)
+        paginator = Paginator(records_list, 1) # Show 2 contacts per page
+
+        page = request.GET.get('page')
+        try:
+           records = paginator.page(page)
+        except PageNotAnInteger:
+           # If page is not an integer, deliver first page.
+           records = paginator.page(1)
+        except EmptyPage:
+           # If page is out of range (e.g. 9999), deliver last page of results.
+           records = paginator.page(paginator.num_pages)
+
+        return render(request,'android_obd/all_routes.html',{"records": records})
 
 
 def route(request, id=5):
