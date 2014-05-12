@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from android_obd.forms import MyUserCreationForm
+from android_obd.forms import MyUserCreationForm, UserNameChangeForm
 from android_obd.models import Record
 from django.views.generic import DetailView
 
@@ -42,6 +42,30 @@ def register(request):
 
 	form = MyUserCreationForm()
 	return render(request, 'android_obd/register.html', 
+		{'form': form})
+
+def profile_edit(request):
+	info = []
+	
+	current_user = User.objects.get(username=request.user)
+
+	if request.method == 'POST':
+		form = UserNameChangeForm(request.POST)
+		if form.is_valid():
+			user = authenticate(username=request.user, password=form.cleaned_data['password'])
+			if user is None:
+				info.append('Podane niewłaściwe hasło')
+			else:
+				current_user.first_name = form.cleaned_data['first_name']
+				current_user.last_name = form.cleaned_data['last_name']
+				current_user.save()
+				return HttpResponseRedirect(reverse('profile', kwargs={'slug': request.user}))
+		else:
+			return render(request, 'android_obd/profile_edit.html', 
+				{'form': form})
+
+	form = UserNameChangeForm(initial={'first_name': current_user.first_name, 'last_name': current_user.last_name})
+	return render(request, 'android_obd/profile_edit.html', 
 		{'form': form})
 
 @login_required

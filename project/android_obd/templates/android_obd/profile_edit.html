@@ -1,0 +1,28 @@
+{% extends "android_obd/base.html" %}
+{% load static %}
+{% url 'register' as register_url %}
+
+{% block title %}EndoCarMondo - Zmiana danych{% endblock title %}
+
+{% block style %}
+		<link href="{% static 'android_obd/css/profile_change.css' %}" rel="stylesheet">		
+{% endblock style %}
+
+{% block content %}
+	<div class="container">
+		<form method="post" class="form-signin{% if form.errors %} has-error{% endif %}" role="form" action="{% url 'profile_edit' %}">
+			<h2 class="form-signin-heading">Zmień swoje dane</h2>
+{% if form.errors %}
+				<div class="alert alert-danger">
+					<strong>Bład zmiany danych!</strong><br />
+					{% for error in form.errors.values %}
+					{{ error }}
+					{% endfor %}
+				</div>
+{% endif %}
+{{ form.as_bootstrap }}
+{% csrf_token %}
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Zarejestruj</button>
+		</form>
+	</div>
+{% endblock content %}
