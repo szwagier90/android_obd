@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
+from django.db.models import Count
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -22,7 +23,9 @@ class ProfileDetail(DetailView):
 	template_name = 'android_obd/profile_detail_view.html'
 
 def index(request):
-	return render(request, 'android_obd/home.html')
+	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:10]
+	return render(request, 'android_obd/home.html',
+			{'most_added': most_added})
 
 def register(request):
 	if request.user.is_authenticated():

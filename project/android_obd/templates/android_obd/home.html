@@ -22,7 +22,22 @@
 				</div>
 				<div class="col-md-4">
 					<h4><center>Najwięcej dodanych przejazdów</center></h4>
-					<p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+					<table class="table table-bordered table-condensed table-striped">
+						<thead>
+							<tr>
+								<th class="col-md-3"><center>Użytkownik</center></th>
+								<th class="col-md-1"><center>Przejazdów</center></th>
+							</tr>
+						</thead>
+						<tbody>
+	{% for user in most_added %}
+							<tr>
+								<td>{{ user.username }}</td>
+								<td>{{ user.records_count }}</td>
+							</tr>
+	{% endfor %}
+						</tbody>
+					</table>
 					<p><a class="btn btn-default" href="{% url 'more_added' %}" role="button">Zobacz więcej &raquo;</a></p>
 				</div>
 				<div class="col-md-4">
