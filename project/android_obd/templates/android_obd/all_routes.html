@@ -22,7 +22,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ r.video_link }}</td>
                         <td>{{ r.tags.all | join:", " }}</td>
-                        <td><a href="/route/{{ cos.id }}/">klik</a></td>
+                        <td><a href="/route/{{ r.id }}/">klik</a></td>
                     </tr>
     {% endfor %}
                 </tbody>

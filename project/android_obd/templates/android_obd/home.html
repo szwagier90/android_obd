@@ -9,7 +9,9 @@
 				<p><strong>Rejestruj</strong> trasy<br />
 				<strong>Rywalizuj</strong> ze znajomymi<br />
 				<strong>Analizuj</strong> parametry</p>
+			{% if not user.is_authenticated %}	
 				<p><a href="{% url 'register' %}" class="btn btn-primary btn-lg" role="button">Zarejestruj się... &raquo;</a></p>
+			{% endif %}
 			</div>
 		</div>
 

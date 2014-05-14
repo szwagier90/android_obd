@@ -74,24 +74,20 @@ def profile_edit(request):
 @login_required
 def all_routes(request):
         records_list = Record.objects.filter(user=request.user)
-        paginator = Paginator(records_list, 1) # Show 2 contacts per page
+        paginator = Paginator(records_list, 1) # Show 1 contacts per page
 
         page = request.GET.get('page')
         try:
            records = paginator.page(page)
         except PageNotAnInteger:
-           # If page is not an integer, deliver first page.
            records = paginator.page(1)
         except EmptyPage:
-           # If page is out of range (e.g. 9999), deliver last page of results.
            records = paginator.page(paginator.num_pages)
 
         return render(request,'android_obd/all_routes.html',{"records": records})
 
 
 def route(request, id=5):
-	#slownik = {"wsp": [['Y',-121.44],['X',37.78]]}
-	#slownik = {"wsp": [['Y',-121.4],['X',37.7699298]]}
 
 	lista =  [
         {'X':37.60,'Y':-121.44,'spalanie':0,'predkosc':0},
@@ -102,7 +98,6 @@ def route(request, id=5):
         {'X':40.7699298,'Y':-122.4469157,'spalanie':21,'predkosc':185}
         ]
 
-	#slownik = {"wsp":[-121.44, 37.77]}
 	json_list = simplejson.dumps(lista)
 	
 	return render(request, 'android_obd/route.html', {"wsp":json_list,"my_id":id })
