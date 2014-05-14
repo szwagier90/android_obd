@@ -19,9 +19,13 @@
                 <tbody>
     {% for r in records %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
+                        <td>{{ r.id }}</td>
                         <td>{{ r.video_link }}</td>
-                        <td>{{ r.tags.all | join:", " }}</td>
+                        <<td>
+			{% for t in r.tags.all %}
+				<a href="/tags/{{ t }}/">{{ t }} </a>
+			{% endfor %}
+			</td>
                         <td><a href="/route/{{ r.id }}/">klik</a></td>
                     </tr>
     {% endfor %}

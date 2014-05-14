@@ -1,0 +1,45 @@
+{% extends "android_obd/base.html" %}
+
+{% block title %}Witaj w EndoCarMondo{% endblock title %}
+
+{% block content %}
+		<div class="jumbotron">
+			<div class="container">
+				<h1>TAG: {{ name }}</h1>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h4><center>Przejazdy z tagiem {{ name }}</center></h4>
+					            <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Nr</th>	
+			<th>User</th>
+                        <th>Video Link</th>
+                        <th>Tags</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+    {% for t in tags %}
+                    <tr>
+			<td>{{ t.id }}</td>
+			<td>{{ t.user }}</td>	
+                        <td>{{ t.video_link }}</td>
+                        <td>
+			{% for tag in t.tags.all %}
+				<a href="/tags/{{ tag }}/">{{ tag }} </a>
+			{% endfor %}
+			</td>
+                        <td><a href="/route/{{ t.id }}/">klik</a></td>
+                    </tr>
+    {% endfor %}
+                </tbody>
+            </table>
+ 
+		</div>
+
+{% endblock content %}

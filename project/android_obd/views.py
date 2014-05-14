@@ -24,8 +24,10 @@ class ProfileDetail(DetailView):
 
 def index(request):
 	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:10]
+	last_added = Record.objects.all().order_by('-id')[:5]
+
 	return render(request, 'android_obd/home.html',
-			{'most_added': most_added})
+			{'most_added': most_added,'last_added':last_added, 'tags':tags})
 
 def register(request):
 	if request.user.is_authenticated():
@@ -116,3 +118,8 @@ def profiles(request):
 	recent_users_list = User.objects.order_by('-date_joined')[:10]
 	return render(request, 'android_obd/profiles.html',
 		{'recent_users_list': recent_users_list, 'info': info})
+
+def tags(request, tag="brak"):
+       
+	tags = Record.objects.filter(tags__name=tag)
+        return render(request, 'android_obd/tags.html',{"tags":tags,"name":tag})
