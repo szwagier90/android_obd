@@ -7,6 +7,7 @@
 						<li{% ifequal request.path index_url %} class="active"{% endifequal %}><a href="{% url 'index' %}">Strona Główna</a></li>
 {% if not user.is_authenticated %}
 						<li{% ifequal request.path register_url %} class="active"{% endifequal %}><a href="{% url 'register' %}">Zarejestruj</a></li>
+						<li><a href="{% url 'facebook' %}">Facebook</a></li>
 {% else %}
 						<li{% ifequal request.path routes_url %} class="active"{% endifequal %}> <a href="{% url 'routes' %}">Moje trasy</a></li>
 						<li{% ifequal request.path profiles_url %} class="active"{% endifequal %}><a href="{% url 'profiles' %}">Ludzie</a></li>

@@ -18,9 +18,9 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from face import *
+from face import face_auth
 
-
+from django.conf import settings
 
 class ProfileDetail(DetailView):
 	model = User
@@ -29,9 +29,6 @@ class ProfileDetail(DetailView):
 def index(request):
 	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:10]
 	last_added = Record.objects.all().order_by('-id')[:5]
-	
-	if request.GET.get("code") != None:
-		code2token(request.GET.get("code"))
 
 	return render(request, 'android_obd/home.html',{'most_added': most_added,'last_added':last_added, 'tags':tags})
 
@@ -57,13 +54,24 @@ def register(request):
 
 def face(request):
 
-	FACEBOOK_APP_ID     = '1480924338806342'
-	FACEBOOK_APP_SECRET = 'ac8ab41856683368a125f6d7d1a186ee'
 	
-	app_id = FACEBOOK_APP_ID
-	redirect_uri = 'http://156.17.234.28:8888/'
+	redirect_uri = settings.DOMAIN+'/face/auth'
+		
+	if request.GET.get("code") != None:
+		token, me = face_auth().code2token(request.GET.get("code"))
+		try:
+			User.objects.get(email=me['email'])
+		except:
+			u=User(username=me['email'], email=me['email'], password='2w32213')
+			u.save()
+					
+		user = User.objects.get(email=me['email'])
+		user.backend = 'django.contrib.auth.backends.ModelBackend'
+		request.session["token"]=token
+		login(request, user)
+		return HttpResponseRedirect(reverse('profile', kwargs={'slug': user.username}))
 
-	www="https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s"%(app_id, redirect_uri)
+	www = "https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&scope=email"%(settings.FACEBOOK_APP_ID, redirect_uri)
 	
 	return HttpResponseRedirect(www)
 
