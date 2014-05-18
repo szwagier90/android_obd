@@ -23,7 +23,7 @@ class ProfileDetail(DetailView):
 	template_name = 'android_obd/profile_detail_view.html'
 
 def index(request):
-	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:10]
+	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:5]
 	last_added = Record.objects.all().order_by('-id')[:5]
 
 	return render(request, 'android_obd/home.html',
