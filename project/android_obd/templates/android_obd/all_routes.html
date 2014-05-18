@@ -17,39 +17,34 @@
                     </tr>
                 </thead>
                 <tbody>
-    {% for r in records %}
+        {% for record in records %}
                     <tr>
-                        <td>{{ r.id }}</td>
-                        <td>{{ r.video_link }}</td>
-                        <<td>
-			{% for t in r.tags.all %}
-				<a href="/tags/{{ t }}/">{{ t }} </a>
+                        <td>{{ record.id }}</td>
+                        <td>{{ record.video_link }}</td>
+                        <td>
+			{% for tag in record.tags.all %}
+            				<a href="{% url 'tags' tag=tag %}">{{ tag }} </a>
 			{% endfor %}
-			</td>
-                        <td><a href="/route/{{ r.id }}/">klik</a></td>
+            			</td>
+                        <td><a href="{% url 'route' id=record.id %}">klik</a></td>
                     </tr>
-    {% endfor %}
+        {% endfor %}
                 </tbody>
             </table>
-          <div class="pagination">
-            <span class="step-links">
+            <div class="pagination">
+                <span class="step-links">
     {% if records.has_previous %}
-             <a href="?page={{ records.previous_page_number }}">&laquo</a>
+                    <a href="?page={{ records.previous_page_number }}">&laquo</a>
     {% endif %}
-
-            <span class="current">
-              {{ records.number }} / {{ records.paginator.num_pages }}
-            </span>
-
+                        <span class="current">
+                            {{ records.number }} / {{ records.paginator.num_pages }}
+                        </span>
     {% if records.has_next %}
-            <a href="?page={{ records.next_page_number }}">&raquo</a>
+                    <a href="?page={{ records.next_page_number }}">&raquo</a>
     {% endif %}
-         </span>
-</div>
-        </div><!-- /example --> 
+                </span>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
-
-{% comment %}
-{% endcomment %}
