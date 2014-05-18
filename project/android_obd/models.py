@@ -11,9 +11,12 @@ class Record(models.Model):
 	user = models.ForeignKey(User)
 	video_link = models.URLField(max_length=200, blank=True)
 	tags = models.ManyToManyField(Tag)
+	distance = models.IntegerField(blank=True)
+	fuel_consumption = models.IntegerField(blank=True)
+	public = models.BooleanField(default=False)
 
 	def __unicode__(self):
-		return "%s: %s (%s)" % (self.user, self.tags.all(), self.video_link)
+		return "%s (%d km): %s link:(%s) fuel:%d" % (self.user, self.distance, self.tags.all(), self.video_link, self.fuel_consumption)
 
 class MeasurementType(models.Model):
 	name = models.CharField(max_length=100)
