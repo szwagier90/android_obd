@@ -19,32 +19,32 @@
 			<div class="row">
 				<div class="col-md-12">
 					<h4><center>Ostatnio dodane przejazdy</center></h4>
-					            <table class="table table-bordered table-condensed table-striped">
-                <thead>
-                    <tr>
-                        <th>Nr</th>	
-			<th>User</th>
-                        <th>Video Link</th>
-                        <th>Tags</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-    {% for r in last_added %}
-                    <tr>
-			<td>{{ r.id }}</td>
-			<td>{{ r.user }}</td>	
-                        <td>{{ r.video_link }}</td>
-                        <td>
-			{% for t in r.tags.all %}
-				<a href="/tags/{{ t }}/">{{ t }} </a>
-			{% endfor %}
-			</td>
-                        <td><a href="/route/{{ r.id }}/">klik</a></td>
-                    </tr>
-    {% endfor %}
-                </tbody>
-            </table>
+		            <table class="table table-bordered table-condensed table-striped">
+		                <thead>
+		                    <tr>
+		                        <th class="col-md-1">Nr</th>	
+								<th class="col-md-2">User</th>
+		                        <th>Video Link</th>
+		                        <th>Tags</th>
+		                        <th class="col-md-1">Details</th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+		    {% for record in last_added %}
+		                    <tr>
+								<td>{{ record.id }}</td>
+								<td>{{ record.user }}</td>	
+		                        <td>{{ record.video_link }}</td>
+		                        <td>
+				{% for tag in record.tags.all %}
+									<a href="{% url 'tags' tag=tag %}">{{ tag }} </a>
+				{% endfor %}
+								</td>
+		                        <td><a href="{% url 'route' id=record.id %}">klik</a></td>
+		                    </tr>
+		    {% endfor %}
+		                </tbody>
+		            </table>
  
 					<p><a class="btn btn-default" href="{% url 'more_recent' %}" role="button">Zobacz więcej &raquo;</a></p>
 				</div>
