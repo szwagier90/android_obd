@@ -18,6 +18,10 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from face import *
+
+
+
 class ProfileDetail(DetailView):
 	model = User
 	template_name = 'android_obd/profile_detail_view.html'
@@ -25,9 +29,11 @@ class ProfileDetail(DetailView):
 def index(request):
 	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:10]
 	last_added = Record.objects.all().order_by('-id')[:5]
+	
+	if request.GET.get("code") != None:
+		code2token(request.GET.get("code"))
 
-	return render(request, 'android_obd/home.html',
-			{'most_added': most_added,'last_added':last_added, 'tags':tags})
+	return render(request, 'android_obd/home.html',{'most_added': most_added,'last_added':last_added, 'tags':tags})
 
 def register(request):
 	if request.user.is_authenticated():
@@ -48,6 +54,18 @@ def register(request):
 	form = MyUserCreationForm()
 	return render(request, 'android_obd/register.html', 
 		{'form': form})
+
+def face(request):
+
+	FACEBOOK_APP_ID     = '1480924338806342'
+	FACEBOOK_APP_SECRET = 'ac8ab41856683368a125f6d7d1a186ee'
+	
+	app_id = FACEBOOK_APP_ID
+	redirect_uri = 'http://156.17.234.28:8888/'
+
+	www="https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s"%(app_id, redirect_uri)
+	
+	return HttpResponseRedirect(www)
 
 def profile_edit(request):
 	info = []

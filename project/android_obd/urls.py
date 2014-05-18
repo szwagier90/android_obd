@@ -16,6 +16,7 @@ urlpatterns = patterns('android_obd.views',
 	url(r'^register/$', 'index', name='more_fuel'),
 	url(r'^routes/$', 'all_routes', name='routes'),
 	url(r'^tags/(?P<tag>.+)/$', 'tags', name='tags'),
+	url(r'^face/auth/$','face',name='facebook'),
 )
 
 urlpatterns += patterns('django.contrib.auth.views',
