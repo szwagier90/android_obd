@@ -7,6 +7,14 @@ import cgi
 from open_facebook.api import OpenFacebook
 from django.conf import settings
 
+# Import smtplib for the actual sending function
+import smtplib
+import unicodedata
+
+from random import choice
+from string import printable
+
+
 class face_auth:
 	redirect_uri = settings.DOMAIN+'/face/auth'
 	
@@ -21,7 +29,7 @@ class face_auth:
 		#print expires
 		graph = OpenFacebook(access_token)
 		me = dict(graph.get('me'))
-		print me
+
 		return access_token, me
 
 	def publish(self, text):
@@ -43,4 +51,12 @@ class face_auth:
 
 		#graph.set('me/feed', message='facebook test22')
 		#print graph.get('me/permissions')
-	 
+
+
+class generator:
+	
+	def gen(self):
+		passwd=""
+		for i in range(0,int(10)):
+			passwd+=choice(printable)
+		return passwd

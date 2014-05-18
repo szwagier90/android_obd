@@ -18,9 +18,10 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from face import face_auth
+from face import face_auth, generator
 
 from django.conf import settings
+
 
 class ProfileDetail(DetailView):
 	model = User
@@ -62,9 +63,9 @@ def face(request):
 		try:
 			User.objects.get(email=me['email'])
 		except:
-			u=User(username=me['email'], email=me['email'], password='2w32213')
+			u=User(username=me['email'], email=me['email'], password=generator().gen)
 			u.save()
-					
+		
 		user = User.objects.get(email=me['email'])
 		user.backend = 'django.contrib.auth.backends.ModelBackend'
 		request.session["token"]=token
