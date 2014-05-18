@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -30,8 +30,8 @@ class ProfileDetail(DetailView):
 def index(request):
 	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:5]
 	last_added = Record.objects.all().order_by('-id')[:5]
-
-	return render(request, 'android_obd/home.html',{'most_added': most_added,'last_added':last_added, 'tags':tags})
+	longest_distance = User.objects.annotate(total_distance=Sum('record__distance')).order_by('-total_distance')[:5]
+	return render(request, 'android_obd/home.html', {'most_added': most_added, 'last_added': last_added, 'longest_distance': longest_distance})
 
 def register(request):
 	if request.user.is_authenticated():
