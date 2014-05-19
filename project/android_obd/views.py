@@ -54,10 +54,12 @@ def register(request):
 		{'form': form})
 
 def face(request):
-
-	
+	scope = ['email']
 	redirect_uri = settings.DOMAIN+'/face/auth'
-		
+	
+	#face_auth().publish("wiadomosc",requests.session['token']
+	
+	#wymiana code na token i rejestracja/logowanie w app
 	if request.GET.get("code") != None:
 		token, me = face_auth().code2token(request.GET.get("code"))
 		try:
@@ -72,7 +74,8 @@ def face(request):
 		login(request, user)
 		return HttpResponseRedirect(reverse('profile', kwargs={'slug': user.username}))
 
-	www = "https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&scope=email"%(settings.FACEBOOK_APP_ID, redirect_uri)
+	#przekierowanie na logowanie do FB
+	www = "https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&scope=%s"%(settings.FACEBOOK_APP_ID, redirect_uri,scope)
 	
 	return HttpResponseRedirect(www)
 
@@ -103,7 +106,7 @@ def profile_edit(request):
 @login_required
 def all_routes(request):
         records_list = Record.objects.filter(user=request.user)
-        paginator = Paginator(records_list, 1) # Show 1 contacts per page
+        paginator = Paginator(records_list, 10) # Show 10 contacts per page
 
         page = request.GET.get('page')
         try:
@@ -127,9 +130,11 @@ def route(request, id=5):
         {'X':40.7699298,'Y':-122.4469157,'spalanie':21,'predkosc':185}
         ]
 
+	
+	record = Record.objects.get(id=id)
 	json_list = simplejson.dumps(lista)
 	
-	return render(request, 'android_obd/route.html', {"wsp":json_list,"my_id":id })
+	return render(request, 'android_obd/route.html', {"wsp":json_list, "record":record })
 
 @login_required
 def profiles(request):

@@ -11,15 +11,15 @@
 
         <div class="col-md-12 col-xs-12 col-sm-9">
           <div class="jumbotron">
-            <p>Twoja trasa nr {{ my_id }}</p>
+            <p>Twoja trasa nr {{ record.id }}</p>
           </div>
+	{% if  record.user == user or record.public %}
           <div class="row">
             <div class="col-md-6 col-sm-6 col-lg-6">
               <h2>Mapa</h2>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvBedZY7MOZPqbGxmkBctmNfm2ooi9xls&sensor=true">
    		 </script>
 		<script type="text/javascript">
-			//var aaa = [['Y',-121.44],['X',37.78]]
 			var aaa = {{ wsp|safe }}
 		</script>
 		<script src="{% static 'android_obd/js/map.js' %}"></script>
@@ -41,6 +41,9 @@
 		<iframe width=100% height=400px src="//www.youtube.com/embed/JrQmyvXvVj0?feature=player_detailpage" frameborder="2" allowfullscreen></iframe> 
 	    </div><!--/span-->
 	  </div><!--/span-->
+	{% else %}
+	  <h2>Nie masz dostepu do tej trasy</h2>
+	{% endif %}
 	</div><!--/col-xs-12-->
       </div><!--/row-->
     </div><!--/container-->
