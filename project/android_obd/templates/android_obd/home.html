@@ -87,11 +87,26 @@
 						</tbody>
 					</table>
 					<p><a class="btn btn-default" href="{% url 'more_added' %}" role="button">Zobacz więcej &raquo;</a></p>
-				</div>				
+				</div>
 				<div class="col-md-4">
-					<h4><center>Najmniejsze średnie spalanie</center></h4>
-					<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-					<p><a class="btn btn-default" href="{% url 'more_fuel' %}" role="button">Zobacz więcej &raquo;</a></p>
+					<h4><center>Najmniejsze spalanie</center></h4>
+					<table class="table table-bordered table-condensed table-striped">
+						<thead>
+							<tr>
+								<th class="col-md-3"><center>Użytkownik</center></th>
+								<th class="col-md-1"><center>Przejazdów</center></th>
+							</tr>
+						</thead>
+						<tbody>
+	{% for user in smallest_fuel_consumption %}
+							<tr>
+								<td>{{ user.username }}</td>
+								<td>{{ user.total_fuel_consumption }}</td>
+							</tr>
+	{% endfor %}
+						</tbody>
+					</table>
+					<p><a class="btn btn-default" href="{% url 'more_added' %}" role="button">Zobacz więcej &raquo;</a></p>
 				</div>
 			</div>
 		</div>
