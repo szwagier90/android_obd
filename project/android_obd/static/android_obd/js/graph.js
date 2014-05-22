@@ -34,7 +34,7 @@ $(function () {
                 }]
             },
             tooltip: {
-                valueSuffix: '°C'
+                valueSuffix: 'j'
             },
             legend: {
                 layout: 'vertical',
