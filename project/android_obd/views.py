@@ -126,15 +126,25 @@ def all_routes(request):
 
 def route(request, id=5):
 
+	
+	if request.method == 'POST':
+		if request.POST.get("False"):
+			public = False;
+		if request.POST.get("True"):
+			public = True
+		print public
+		record = Record.objects.get(id=id)
+		record.public = public
+		record.save()
+	
 	lista =  [
-        {'X':37.60,'Y':-121.44,'spalanie':0,'predkosc':0},
-        {'X':37.7699298,'Y':-118.4469157,'spalanie': 4,'predkosc':78},
-        {'X':36.7699298,'Y':-120.4469157,'spalanie': 7,'predkosc':56},
-        {'X':38.7699298,'Y':-120.4469157,'spalanie': 8,'predkosc':30},
-        {'X':37.7699298,'Y':-122.4469157,'spalanie':12},
-        {'X':40.7699298,'Y':-122.4469157,'spalanie':21,'predkosc':185}
+        {'id':0,'X':37.60,'Y':-121.44,'spalanie':4,'predkosc':0},
+        {'id':1,'X':37.7699298,'Y':-118.4469157,'spalanie': 4,'predkosc':78},
+        {'id':2,'X':36.7699298,'Y':-120.4469157,'spalanie': 7,'predkosc':56},
+        {'id':3,'X':38.7699298,'Y':-120.4469157,'spalanie': 8,'predkosc':30},
+        {'id':4,'X':37.7699298,'Y':-122.4469157,'spalanie':12},
+        {'id':5,'X':40.7699298,'Y':-122.4469157,'spalanie':21,'predkosc':185}
         ]
-
 	
 	record = Record.objects.get(id=id)
 	json_list = simplejson.dumps(lista)

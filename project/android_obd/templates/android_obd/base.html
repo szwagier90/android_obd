@@ -1,3 +1,4 @@
+
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
@@ -31,8 +32,8 @@
 				</div>
 
 				<div class="navbar-collapse collapse">
-{% include 'android_obd/menu.html' %}
 {% include 'android_obd/user.html' %}
+{% include 'android_obd/menu.html' %}
 				</div><!--/.nav-collapse -->
 			</div>
 		</div>
@@ -46,11 +47,10 @@
 	        <p>&copy; Politechnika Wrocławska - Projekt ZIwG</p>
 	      </footer>
 	    </div> 
-
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<!--		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
 		<script src="{% static 'android_obd/js/bootstrap.min.js' %}"></script>
 		<script src="{% static 'android_obd/js/docs.min.js' %}"></script>
 	</body>
