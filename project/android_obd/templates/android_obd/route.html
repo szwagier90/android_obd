@@ -39,6 +39,10 @@
 		<p><b>Uzytkownik:</b> {{ record.user }}</p>
 		<p><b>Dystans:   </b> {{ record.distance }} km</p>
 		<p><b>Paliwo:   </b> {{ record.fuel_consumption }} l</p>
+		<p><b>Tagi:     </b> 	{% for tag in record.tags.all %}
+            					<a href="{% url 'tags' tag=tag %}">{{ tag }} </a>
+					{% endfor %}
+		</p> 
 		<form method="post" action="{% url 'route' id=record.id %}">
 		{% if record.public %} 
 			<p>Trasa publiczna.</p> 
