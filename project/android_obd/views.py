@@ -32,7 +32,12 @@ def index(request):
 	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:5]
 	last_added = Record.objects.all().order_by('-id')[:5]
 	longest_distance = User.objects.annotate(total_distance=Sum('record__distance')).order_by('-total_distance')[:5]
-	return render(request, 'android_obd/home.html', {'most_added': most_added, 'last_added': last_added, 'longest_distance': longest_distance})
+	smallest_fuel_consumption = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).order_by('-total_fuel_consumption')[:5]
+	return render(request, 'android_obd/home.html', 
+		{'most_added': most_added,
+		 'last_added': last_added,
+		 'longest_distance': longest_distance,
+		 'smallest_fuel_consumption': smallest_fuel_consumption})
 
 def register(request):
 	if request.user.is_authenticated():
