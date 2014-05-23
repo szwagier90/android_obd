@@ -22,6 +22,7 @@ from face import face_auth, generator
 
 from django.conf import settings
 
+import random
 
 class ProfileDetail(DetailView):
 	model = User
@@ -127,20 +128,31 @@ def route(request, id=5):
 			public = False;
 		if request.POST.get("True"):
 			public = True
-		print public
+
 		record = Record.objects.get(id=id)
 		record.public = public
 		record.save()
+
+	lista = []
+	for i in range(50):
+		s = {}
+		s['id']=i
+		s['X']=random.uniform(-90, 90)
+		s['Y']=random.uniform(-90, 90)
+		s['spalanie']=random.uniform(0, 20)
+		s['predkosc']=random.uniform(0, 300)
+		lista.append(s)
 	
-	lista =  [
-        {'id':0,'X':37.60,'Y':-121.44,'spalanie':4,'predkosc':0},
-        {'id':1,'X':37.7699298,'Y':-118.4469157,'spalanie': 4,'predkosc':78},
-        {'id':2,'X':36.7699298,'Y':-120.4469157,'spalanie': 7,'predkosc':56},
-        {'id':3,'X':38.7699298,'Y':-120.4469157,'spalanie': 8,'predkosc':30},
-        {'id':4,'X':37.7699298,'Y':-122.4469157,'spalanie':12},
-        {'id':5,'X':40.7699298,'Y':-122.4469157,'spalanie':21,'predkosc':185}
-        ]
 	
+#	lista =  [
+#        {'id':0,'X':37.60,'Y':-121.44,'spalanie':4,'predkosc':0},
+#        {'id':1,'X':37.7699298,'Y':-118.4469157,'spalanie': 4,'predkosc':78},
+#        {'id':2,'X':3.7699298,'Y':-120.4469157,'spalanie': 7,'predkosc':56},
+#        {'id':3,'X':38.7699298,'Y':-120.4469157,'spalanie': 8,'predkosc':30},
+#        {'id':4,'X':37.7699298,'Y':-122.4469157,'spalanie':12},
+#        {'id':5,'X':45.7699298,'Y':-122.4469157,'spalanie':21,'predkosc':185}
+#        ]
+		
 	record = Record.objects.get(id=id)
 	json_list = simplejson.dumps(lista)
 	
