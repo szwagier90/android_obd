@@ -141,6 +141,10 @@ def route(request, id=5):
 	lista = []
 	for i in range(50):
 		s = {}
+		if i>0:
+			s['km']=round(random.uniform(lista[i-1]['km'],lista[i-1]['km']+2),1)
+		else:
+			s['km']=2
 		s['id']=i
 		s['X']=random.uniform(-90, 90)
 		s['Y']=random.uniform(-90, 90)
