@@ -195,14 +195,14 @@ def more(request, type, page=1):
 				more['records'] = record_paginator.page(record_paginator.num_pages)
 			return render(request, 'android_obd/more_recent.html', {'more': more})	
 		elif type == 'added':
-			more['columns'] = ['Użytkownik', 'Dodanych przejazdów']
-			records_list = User.objects.annotate(records_count = Count('record')).order_by('-records_count')
+			more['columns'] = [{'name': 'Użytkownik', 'span': 3}, {'name': 'Przejazdów', 'span': 1}]
+			records_list = User.objects.annotate(record_stat = Count('record')).order_by('-record_stat')
 		elif type == 'longest':
-			more['columns'] = ['Użytkownik', 'Łączny dystans']
-			records_list = User.objects.annotate(total_distance=Sum('record__distance')).order_by('-total_distance')
+			more['columns'] = [{'name': 'Użytkownik', 'span': 3}, {'name': 'Łączny dystans', 'span': 1}]
+			records_list = User.objects.annotate(record_stat=Sum('record__distance')).order_by('-record_stat')
 		elif type == 'fuel':
-			more['columns'] = ['Użytkownik', 'Najmniejsze spalanie']
-			records_list = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).order_by('-total_fuel_consumption')
+			more['columns'] = [{'name': 'Użytkownik', 'span': 3}, {'name': 'Najmniejsze spalanie', 'span': 1}]
+			records_list = User.objects.annotate(record_stat=Sum('record__fuel_consumption')).order_by('-record_stat')
 	else:
 		return HttpResponseRedirect(reverse('index'))
 
@@ -212,7 +212,6 @@ def more(request, type, page=1):
 	except PageNotAnInteger:
 		more['records'] = record_paginator.page(1)
 	except EmptyPage:
-			more['records'] = record_paginator.page(record_paginator.num_pages)
+		more['records'] = record_paginator.page(record_paginator.num_pages)
 	return render(request, 'android_obd/more.html',
-		{'more': more
-		})	
+		{'more': more})	

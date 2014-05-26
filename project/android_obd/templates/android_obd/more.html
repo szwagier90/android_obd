@@ -1,0 +1,47 @@
+{% extends "android_obd/base.html" %}
+
+{% block title %}Endomondo - {{ more.title }}{% endblock title %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-offset-4">
+                <h4><center>{{ more.title }}</center></h4>
+                <table class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+        {% for col in more.columns %}
+                            <th class="col-md-{{ col.span }}">{{ col.name }}</th>
+        {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+        {% for record in more.records %}
+                        <tr>
+                            <td>{% ifequal request.user|slugify record.username %}<b>{% endifequal %}<a href="{% url 'profile' slug=record.username %}">{{ record.username }}</a>{% ifequal request.user|slugify record.username %}</b>{% endifequal %}</td>
+                            <td>{% ifequal request.user|slugify record.username %}<b>{% endifequal %}{{ record.record_stat }}{% ifequal request.user|slugify record.username %}</b>{% endifequal %}</td>
+                        </tr>
+        {% endfor %}
+                    </tbody>
+                </table> 
+                <ul class="pagination">
+    {% if more.records.has_previous %}
+                    <li><a href="{% url 'more_paged' type=more.type page=more.records.previous_page_number %}">&laquo;</a></li>
+    {% else %}
+                    <li class="disabled"><a href="#">&laquo;</a></li>
+    {% endif %}
+    {% for page in more.records.paginator.page_range %}
+                    <li{% ifequal page more.records.number %} class="active"{% endifequal %}><a href="{% url 'more_paged' type=more.type page=page %}">{{ page }}</a></li>
+    {% endfor %}
+    {% if more.records.has_next %}
+                    <li><a href="{% url 'more_paged' type=more.type page=more.records.next_page_number %}">&raquo;</a></li>
+    {% else %}
+                    <li class="disabled"><a href="#">&raquo;</a></li>
+    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
