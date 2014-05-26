@@ -33,8 +33,8 @@
 		    {% for record in last_added %}
 		                    <tr>
 								<td>{% ifequal request.user record.user %}<b>{{ record.id }}</b>{% else %}{{ record.id }}{% endifequal %}</td>
-								<td>{% ifequal request.user record.user %}<b>{{ record.user }}</b>{% else %}{{ record.user }}{% endifequal %}</td>
-								<td>{% ifequal request.user record.user %}<b>{{ record.video_link }}</b>{% else %}{{ record.video_link }}{% endifequal %}</td>
+								<td><a href="{% url 'profile' slug=record.user %}">{% ifequal request.user record.user %}<b>{{ record.user }}</b>{% else %}{{ record.user }}{% endifequal %}</a></td>
+								<td><a href="{{ record.video_link }}">{% ifequal request.user record.user %}<b>{{ record.video_link }}</b>{% else %}{{ record.video_link }}{% endifequal %}</a></td>
 		                        <td>
 				{% for tag in record.tags.all %}
 									<a href="{% url 'tags' tag=tag %}">{% ifequal request.user record.user %}<b>{{ tag }}</b>{% else %}{{ tag }}{% endifequal %}</a>
@@ -46,7 +46,7 @@
 		                </tbody>
 		            </table>
  
-					<p><a class="btn btn-default" href="{% url 'more_recent' %}" role="button">Zobacz więcej &raquo;</a></p>
+					<p><a class="btn btn-default" href="{% url 'more' type='recent' %}" role="button">Zobacz więcej &raquo;</a></p>
 				</div>
 				<div class="col-md-4">
 					<h4><center>Najwięcej dodanych przejazdów</center></h4>
@@ -60,13 +60,13 @@
 						<tbody>
 	{% for user in most_added %}
 							<tr>
-								<td>{% ifequal request.user|slugify user.username %}<b>{{ user.username }}</b>{% else %}{{ user.username }}{% endifequal %}</td>
-								<td>{% ifequal request.user|slugify user.username %}<b>{{ user.records_count }}</b>{% else %}{{ user.records_count }}{% endifequal %}</td>
+								<td><a href="{% url 'profile' slug=user.username %}">{% ifequal request.user|slugify user.username %}<b>{% endifequal %}{{ user.username }}{% ifequal request.user|slugify user.username %}</b>{% endifequal %}</a></td>
+								<td>{% ifequal request.user|slugify user.username %}<b>{% endifequal %}{{ user.records_count }}{% ifequal request.user|slugify user.username %}</b>{% endifequal %}</td>
 							</tr>
 	{% endfor %}
 						</tbody>
 					</table>
-					<p><a class="btn btn-default" href="{% url 'more_added' %}" role="button">Zobacz więcej &raquo;</a></p>
+					<p><a class="btn btn-default" href="{% url 'more' type='added' %}" role="button">Zobacz więcej &raquo;</a></p>
 				</div>
 				<div class="col-md-4">
 					<h4><center>Największy dystans</center></h4>
@@ -74,19 +74,19 @@
 						<thead>
 							<tr>
 								<th class="col-md-3"><center>Użytkownik</center></th>
-								<th class="col-md-1"><center>Przejazdów</center></th>
+								<th class="col-md-1"><center>Dystans</center></th>
 							</tr>
 						</thead>
 						<tbody>
 	{% for user in longest_distance %}
 							<tr>
-								<td>{% ifequal request.user|slugify user.username %}<b>{{ user.username }}</b>{% else %}{{ user.username }}{% endifequal %}</td>
-								<td>{% ifequal request.user|slugify user.username %}<b>{{ user.total_distance }}</b>{% else %}{{ user.total_distance }}{% endifequal %}</td>
+								<td><a href="{% url 'profile' slug=user.username %}">{% ifequal request.user|slugify user.username %}<b>{% endifequal %}{{ user.username }}{% ifequal request.user|slugify user.username %}</b>{% endifequal %}</a></td>
+								<td>{% ifequal request.user|slugify user.username %}<b>{% endifequal %}{{ user.total_distance }}{% ifequal request.user|slugify user.username %}</b>{% endifequal %}</td>
 							</tr>
 	{% endfor %}
 						</tbody>
 					</table>
-					<p><a class="btn btn-default" href="{% url 'more_added' %}" role="button">Zobacz więcej &raquo;</a></p>
+					<p><a class="btn btn-default" href="{% url 'more' type='longest' %}" role="button">Zobacz więcej &raquo;</a></p>
 				</div>
 				<div class="col-md-4">
 					<h4><center>Najmniejsze spalanie</center></h4>
@@ -94,19 +94,19 @@
 						<thead>
 							<tr>
 								<th class="col-md-3"><center>Użytkownik</center></th>
-								<th class="col-md-1"><center>Przejazdów</center></th>
+								<th class="col-md-1"><center>Spalanie</center></th>
 							</tr>
 						</thead>
 						<tbody>
 	{% for user in smallest_fuel_consumption %}
 							<tr>
-								<td>{% ifequal request.user|slugify user.username %}<b>{{ user.username }}</b>{% else %}{{ user.username }}{% endifequal %}</td>
-								<td>{% ifequal request.user|slugify user.username %}<b>{{ user.total_fuel_consumption }}</b>{% else %}{{ user.total_fuel_consumption }}{% endifequal %}</td>
+								<td><a href="{% url 'profile' slug=user.username %}">{% ifequal request.user|slugify user.username %}<b>{% endifequal %}{{ user.username }}{% ifequal request.user|slugify user.username %}</b>{% endifequal %}</a></td>
+								<td>{% ifequal request.user|slugify user.username %}<b>{% endifequal %}{{ user.total_fuel_consumption }}{% ifequal request.user|slugify user.username %}</b>{% endifequal %}</td>
 							</tr>
 	{% endfor %}
 						</tbody>
 					</table>
-					<p><a class="btn btn-default" href="{% url 'more_added' %}" role="button">Zobacz więcej &raquo;</a></p>
+					<p><a class="btn btn-default" href="{% url 'more' type='fuel' %}" role="button">Zobacz więcej &raquo;</a></p>
 				</div>
 			</div>
 		</div>
