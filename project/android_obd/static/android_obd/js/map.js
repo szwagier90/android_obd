@@ -9,9 +9,11 @@
 	var spalanie=[];
 	var predkosc=[];
 	var id=[];
+	var km=[];
 	for(i=0; i<aaa.length; i++)
 	{
 		id.push(aaa[i].id);
+		km.push(aaa[i].km);
 		if(aaa[i].spalanie>0) spalanie.push(aaa[i].spalanie);
 		else spalanie.push(0);
 		if(aaa[i].predkosc>0) predkosc.push(aaa[i].predkosc);
@@ -21,29 +23,29 @@
 	$(function () {
         $('#container').highcharts({
             title: {
-                text: 'jakis tam tytul',
+                text: 'Przeglad trasy',
                 x: -20 //center
             },
-            subtitle: {
-                text: 'podtytul',
-                x: -20
-            },
+            //subtitle: {
+            //    text: 'podtytul',
+            //    x: -20
+            //},
             xAxis: {
-                categories: id
+                categories: km
             },
             yAxis: {
-                title: {
-                    text: 'Temperature (°C)'
-                },
+                //title: {
+                //    text: 'Temperature (°C)'
+                //},
                 plotLines: [{
                     value: 0,
                     width: 1,
                     color: '#808080'
                 }]
             },
-            tooltip: {
-                valueSuffix: 'j'
-            },
+           // tooltip: {
+           //     valueSuffix: ''
+           // },
             legend: {
                 layout: 'vertical',
                 align: 'right',
@@ -51,11 +53,11 @@
                 borderWidth: 0
             },
             series: [{
-                name: 'spalanie',
+                name: 'spalanie [l]',
                 data: spalanie
             },
 	    {
-		name: "predkosc",
+		name: "predkosc [km/h]",
 		data: predkosc
 	    }],
 	    plotOptions: {
