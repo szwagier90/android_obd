@@ -28,8 +28,8 @@ class ProfileDetail(DetailView):
 	template_name = 'android_obd/profile_detail_view.html'
 
 def index(request):
-	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:5]
 	last_added = Record.objects.all().order_by('-id')[:5]
+	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:5]
 	longest_distance = User.objects.annotate(total_distance=Sum('record__distance')).order_by('-total_distance')[:5]
 	smallest_fuel_consumption = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).order_by('-total_fuel_consumption')[:5]
 	return render(request, 'android_obd/home.html', 
@@ -170,3 +170,49 @@ def tags(request, tag="brak"):
        
 	tags = Record.objects.filter(tags__name=tag)
         return render(request, 'android_obd/tags.html',{"tags":tags,"name":tag})
+
+def more(request, type, page=1):
+	titles = {
+		'recent': 'Ostatnio dodane przejazdy',
+		'added': 'Najwięcej dodanych przejazdów',
+		'longest': 'Największy dystans',
+		'fuel': 'Najmniejsze spalanie'
+	}
+
+	more = {}
+	more['type'] = type
+	more['title'] = titles.get(type)
+	if more['title']:
+		if type == 'recent':
+			more['columns'] = [{'name': 'Nr', 'span': 1}, {'name': 'Użytkownik', 'span': 2}, {'name': 'Link Video', 'span': 5}, {'name': 'Tagi', 'span': 3}, {'name': 'Szczegóły', 'span': 1}]
+			records_list = Record.objects.all().order_by('-id')
+			record_paginator = Paginator(records_list, 10)
+			try:
+				more['records'] = record_paginator.page(page)
+			except PageNotAnInteger:
+				more['records'] = record_paginator.page(1)
+			except EmptyPage:
+				more['records'] = record_paginator.page(record_paginator.num_pages)
+			return render(request, 'android_obd/more_recent.html', {'more': more})	
+		elif type == 'added':
+			more['columns'] = ['Użytkownik', 'Dodanych przejazdów']
+			records_list = User.objects.annotate(records_count = Count('record')).order_by('-records_count')
+		elif type == 'longest':
+			more['columns'] = ['Użytkownik', 'Łączny dystans']
+			records_list = User.objects.annotate(total_distance=Sum('record__distance')).order_by('-total_distance')
+		elif type == 'fuel':
+			more['columns'] = ['Użytkownik', 'Najmniejsze spalanie']
+			records_list = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).order_by('-total_fuel_consumption')
+	else:
+		return HttpResponseRedirect(reverse('index'))
+
+	record_paginator = Paginator(records_list, 10)
+	try:
+		more['records'] = record_paginator.page(page)
+	except PageNotAnInteger:
+		more['records'] = record_paginator.page(1)
+	except EmptyPage:
+			more['records'] = record_paginator.page(record_paginator.num_pages)
+	return render(request, 'android_obd/more.html',
+		{'more': more
+		})	
