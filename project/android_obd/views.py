@@ -110,19 +110,18 @@ def profile_edit(request):
 		{'form': form})
 
 @login_required
-def all_routes(request):
-        records_list = Record.objects.filter(user=request.user)
-        paginator = Paginator(records_list, 10) # Show 10 contacts per page
+def all_routes(request, page=1):
+    records_list = Record.objects.filter(user=request.user).order_by('-id')
+    paginator = Paginator(records_list, 10)
 
-        page = request.GET.get('page')
-        try:
-           records = paginator.page(page)
-        except PageNotAnInteger:
-           records = paginator.page(1)
-        except EmptyPage:
-           records = paginator.page(paginator.num_pages)
+    try:
+       records = paginator.page(page)
+    except PageNotAnInteger:
+       records = paginator.page(1)
+    except EmptyPage:
+       records = paginator.page(paginator.num_pages)
 
-        return render(request,'android_obd/all_routes.html',{"records": records})
+    return render(request,'android_obd/all_routes.html',{"records": records})
 
 
 def route(request, id=5):

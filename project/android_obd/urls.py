@@ -13,6 +13,7 @@ urlpatterns = patterns('android_obd.views',
 	url(r'^more/(?P<type>\w+)/$', 'more', name='more'),
 	url(r'^more/(?P<type>\w+)/(?P<page>\w+)/$', 'more', name='more_paged'),
 	url(r'^routes/$', 'all_routes', name='routes'),
+	url(r'^routes/(?P<page>\d+)/$', 'all_routes', name='routes_paged'),
 	url(r'^tags/(?P<tag>.+)/$', 'tags', name='tags'),
 	url(r'^face/auth/$','face',name='facebook'),
 )

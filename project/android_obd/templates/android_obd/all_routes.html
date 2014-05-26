@@ -1,6 +1,6 @@
 {% extends "android_obd/base.html" %}
 
-{% block title %}{{ object.username }} - Profil{% endblock %}
+{% block title %}Twoje trasy - EndoCarMondo{% endblock %}
 
 {% block content %}
 <div class="jumbotron">
@@ -20,7 +20,7 @@
         {% for record in records %}
                     <tr>
                         <td>{{ record.id }}</td>
-                        <td>{{ record.video_link }}</td>
+                        <td><a href="{{ record.video_link }}">{{ record.video_link }}</a></td>
                         <td>
 			{% for tag in record.tags.all %}
             				<a href="{% url 'tags' tag=tag %}">{{ tag }} </a>
@@ -31,19 +31,22 @@
         {% endfor %}
                 </tbody>
             </table>
-            <div class="pagination">
-                <span class="step-links">
+                <ul class="pagination">
     {% if records.has_previous %}
-                    <a href="?page={{ records.previous_page_number }}">&laquo</a>
+                    <li><a href="{% url 'routes_paged' page=records.previous_page_number %}">&laquo;</a></li>
+    {% else %}
+                    <li class="disabled"><a href="">&laquo;</a></li>
     {% endif %}
-                        <span class="current">
-                            {{ records.number }} / {{ records.paginator.num_pages }}
-                        </span>
+    {% for page in records.paginator.page_range %}
+                    <li{% ifequal page records.number %} class="active"{% endifequal %}><a href="{% url 'routes_paged' page=page %}">{{ page }}</a></li>
+    {% endfor %}
     {% if records.has_next %}
-                    <a href="?page={{ records.next_page_number }}">&raquo</a>
+                    <li><a href="{% url 'routes_paged' page=records.next_page_number %}">&raquo;</a></li>
+    {% else %}
+                    <li class="disabled"><a href="">&raquo;</a></li>
     {% endif %}
-                </span>
-            </div>
+                </ul>
+
         </div>
     </div>
 </div>
