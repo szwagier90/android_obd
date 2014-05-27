@@ -31,8 +31,8 @@ class ProfileDetail(DetailView):
 def index(request):
 	last_added = Record.objects.all().order_by('-id')[:5]
 	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:5]
-	longest_distance = User.objects.annotate(total_distance=Sum('record__distance')).order_by('-total_distance')[:5]
-	smallest_fuel_consumption = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).order_by('-total_fuel_consumption')[:5]
+	longest_distance = User.objects.annotate(total_distance=Sum('record__distance')).exclude(total_distance=None).order_by('-total_distance')[:5]
+	smallest_fuel_consumption = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).exclude(total_fuel_consumption=None).order_by('total_fuel_consumption')[:5]
 	return render(request, 'android_obd/home.html', 
 		{'most_added': most_added,
 		 'last_added': last_added,
@@ -214,10 +214,10 @@ def more(request, type, page=1):
 			records_list = User.objects.annotate(record_stat = Count('record')).order_by('-record_stat')
 		elif type == 'longest':
 			more['columns'] = [{'name': 'Użytkownik', 'span': 3}, {'name': 'Łączny dystans', 'span': 1}]
-			records_list = User.objects.annotate(record_stat=Sum('record__distance')).order_by('-record_stat')
+			records_list = User.objects.annotate(record_stat=Sum('record__distance')).exclude(record_stat=None).order_by('-record_stat')
 		elif type == 'fuel':
 			more['columns'] = [{'name': 'Użytkownik', 'span': 3}, {'name': 'Najmniejsze spalanie', 'span': 1}]
-			records_list = User.objects.annotate(record_stat=Sum('record__fuel_consumption')).order_by('-record_stat')
+			records_list = User.objects.annotate(record_stat=Sum('record__fuel_consumption')).exclude(record_stat=None).order_by('record_stat')
 	else:
 		return HttpResponseRedirect(reverse('index'))
 
