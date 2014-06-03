@@ -20,7 +20,7 @@
         {% for record in records %}
                     <tr>
                         <td>{{ record.id }}</td>
-                        <td><a href="{{ record.video_link }}">{{ record.video_link }}</a></td>
+                        <td><a href="http://www.youtube.com/watch?v={{ record.video_link }}">{{ record.video_link }}</a></td>
                         <td>
 			{% for tag in record.tags.all %}
             				<a href="{% url 'tags' tag=tag %}">{{ tag }} </a>

@@ -18,8 +18,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from face import face_auth, generator
 from django.conf import settings
+
 import random
 import json
+import re
 
 import sys
 
@@ -136,8 +138,16 @@ def route(request, id=5):
 		if request.POST.get("True"):
 			public = True
 			record.public = public
-		#if request.POST.get("link"):
-		#	print request.POST["link"].value
+		if request.POST.get("link"):
+			pattern = "https?://www\.youtube\.com/watch\?v=([\w+\-]+)"
+			result = re.match(pattern, request.POST.get("link"))
+			if result==None:
+				return HttpResponse('Nieprawidlowe format adresu dla filmu')
+			else:
+				link = result.group(1) #zapisujemy to do bazy
+				print link
+				record.video_link = link
+		
 		record.save()
 
 

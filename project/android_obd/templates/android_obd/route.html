@@ -58,8 +58,13 @@
 		</form>
 		{% if record.user == user %}
 		<br>
+		{% if record.video_link %} 
+		<p><b>Może chcesz zmienić film?</b></p>
+		{% else %}
 		<p><b>Nie dodales jeszcze filmu. Zrób to!</b></p>
+		{% endif %}
 		<form method="post" action="{% url 'route' id=record.id %}">
+{% csrf_token %}
 				<input class="form-control" placeholder="Dodaj film: http://www.youtube.com/watch?v=film_id" type="text" name="link"></input>
 				<button type="submit" class="btn btn-primary">Dodaj film</button>
 		</form>	
@@ -76,8 +81,10 @@
           </div><!--/row-->
 	  <div class="row">   
 	    <div class="col-md-6 col-sm-6 col-lg-6">
+	    {% if record.video_link %} 
 	      <h2> Film z wycieczki</h2>
-		<iframe width=100% height=400px src="//www.youtube.com/embed/X4FKJ-3NEU0?feature=player_detailpage" frameborder="2" allowfullscreen></iframe> 
+		<iframe width=100% height=400px src="//www.youtube.com/embed/{{ record.video_link }}?feature=player_detailpage" frameborder="2" allowfullscreen></iframe> 
+	    {% endif %}
 	    </div><!--/span-->
 	  </div><!--/span-->
 	{% else %}
