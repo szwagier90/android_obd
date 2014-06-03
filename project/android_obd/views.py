@@ -12,17 +12,16 @@ from android_obd.forms import MyUserCreationForm, UserNameChangeForm
 from android_obd.models import Record
 from django.views.generic import DetailView
 
+from django.middleware.csrf import get_token
 from django.utils import simplejson
-
 from django.contrib.auth.decorators import login_required
-
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
 from face import face_auth, generator
-
 from django.conf import settings
-
 import random
+import json
+
+import sys
 
 class ProfileDetail(DetailView):
 	model = User
@@ -208,7 +207,7 @@ def more(request, type, page=1):
 				more['records'] = record_paginator.page(1)
 			except EmptyPage:
 				more['records'] = record_paginator.page(record_paginator.num_pages)
-			return render(request, 'android_obd/more_recent.html', {'more': more})	
+			return render(request, 'android_obd/more_recent.html', {'more': more})
 		elif type == 'added':
 			more['columns'] = [{'name': 'Użytkownik', 'span': 3}, {'name': 'Przejazdów', 'span': 1}]
 			records_list = User.objects.annotate(record_stat = Count('record')).order_by('-record_stat')
@@ -230,3 +229,36 @@ def more(request, type, page=1):
 		more['records'] = record_paginator.page(record_paginator.num_pages)
 	return render(request, 'android_obd/more.html',
 		{'more': more})	
+
+def android_auth_test(request):
+	return render(request, 'android_obd/android_auth_test.html')
+
+def android_auth(request):
+	if request.method == 'POST':
+		json_login_data = request.POST.get('login')
+		if json_login_data:
+			print >>sys.stderr, 'LOGIN W POST'
+			try:
+				login_data = json.loads(json_login_data)
+			except ValueError:
+				print >>sys.stderr, 'JSON_error'
+				return HttpResponse("JSON_error")
+			else:
+				print >>sys.stderr, 'JSON_LOGIN_ROZPAKOWANY'
+				username = login_data.get('username')
+				password = login_data.get('password')
+				if username and password:
+					print >>sys.stderr, 'KLUCZE ODNALEZIONE'
+					user = authenticate(username=username, password=password)
+					if user:
+						print >>sys.stderr, 'UZYTKOWNIK ODNALEZIONY'
+						return HttpResponse(user.id)
+					else:
+						print >>sys.stderr, 'LOGOWANIE NIEPOPRAWNE'
+						return HttpResponse('-1')
+				else:
+					print >>sys.stderr, 'BRAK KLUCZY DO LOGOWANIA'
+					return HttpResponse('AUTHENTICATION_JSON_INCOMPLETE')
+		return HttpResponse('LOGIN_KEY_NOT_FOUND')
+	else:
+		return HttpResponse('NOT_POST')
