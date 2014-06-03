@@ -29,10 +29,10 @@ class ProfileDetail(DetailView):
 	template_name = 'android_obd/profile_detail_view.html'
 
 def index(request):
-	last_added = Record.objects.all().order_by('-id')[:5]
 	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:5]
-	longest_distance = User.objects.annotate(total_distance=Sum('record__distance')).exclude(total_distance=None).order_by('-total_distance')[:5]
-	smallest_fuel_consumption = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).exclude(total_fuel_consumption=None).order_by('total_fuel_consumption')[:5]
+	last_added = Record.objects.all().order_by('-id')[:5]
+	longest_distance = User.objects.annotate(total_distance=Sum('record__distance')).order_by('-total_distance')[:5]
+	smallest_fuel_consumption = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).order_by('-total_fuel_consumption')[:5]
 	return render(request, 'android_obd/home.html', 
 		{'most_added': most_added,
 		 'last_added': last_added,
@@ -110,32 +110,38 @@ def profile_edit(request):
 		{'form': form})
 
 @login_required
-def all_routes(request, page=1):
-    records_list = Record.objects.filter(user=request.user).order_by('-id')
-    paginator = Paginator(records_list, 10)
+def all_routes(request):
+        records_list = Record.objects.filter(user=request.user)
+        paginator = Paginator(records_list, 10) # Show 10 contacts per page
 
-    try:
-       records = paginator.page(page)
-    except PageNotAnInteger:
-       records = paginator.page(1)
-    except EmptyPage:
-       records = paginator.page(paginator.num_pages)
+        page = request.GET.get('page')
+        try:
+           records = paginator.page(page)
+        except PageNotAnInteger:
+           records = paginator.page(1)
+        except EmptyPage:
+           records = paginator.page(paginator.num_pages)
 
-    return render(request,'android_obd/all_routes.html',{"records": records})
+        return render(request,'android_obd/all_routes.html',{"records": records})
 
 
 def route(request, id=5):
 
 	
 	if request.method == 'POST':
+		record = Record.objects.get(id=id)
+
 		if request.POST.get("False"):
-			public = False;
+			public = False
+			record.public = public
 		if request.POST.get("True"):
 			public = True
-
-		record = Record.objects.get(id=id)
-		record.public = public
+			record.public = public
+		#if request.POST.get("link"):
+		#	print request.POST["link"].value
 		record.save()
+
+
 
 	lista = []
 	for i in range(50):
@@ -185,48 +191,3 @@ def tags(request, tag="brak"):
        
 	tags = Record.objects.filter(tags__name=tag)
         return render(request, 'android_obd/tags.html',{"tags":tags,"name":tag})
-
-def more(request, type, page=1):
-	titles = {
-		'recent': 'Ostatnio dodane przejazdy',
-		'added': 'Najwięcej dodanych przejazdów',
-		'longest': 'Największy dystans',
-		'fuel': 'Najmniejsze spalanie'
-	}
-
-	more = {}
-	more['type'] = type
-	more['title'] = titles.get(type)
-	if more['title']:
-		if type == 'recent':
-			more['columns'] = [{'name': 'Nr', 'span': 1}, {'name': 'Użytkownik', 'span': 2}, {'name': 'Link Video', 'span': 5}, {'name': 'Tagi', 'span': 3}, {'name': 'Szczegóły', 'span': 1}]
-			records_list = Record.objects.all().order_by('-id')
-			record_paginator = Paginator(records_list, 10)
-			try:
-				more['records'] = record_paginator.page(page)
-			except PageNotAnInteger:
-				more['records'] = record_paginator.page(1)
-			except EmptyPage:
-				more['records'] = record_paginator.page(record_paginator.num_pages)
-			return render(request, 'android_obd/more_recent.html', {'more': more})	
-		elif type == 'added':
-			more['columns'] = [{'name': 'Użytkownik', 'span': 3}, {'name': 'Przejazdów', 'span': 1}]
-			records_list = User.objects.annotate(record_stat = Count('record')).order_by('-record_stat')
-		elif type == 'longest':
-			more['columns'] = [{'name': 'Użytkownik', 'span': 3}, {'name': 'Łączny dystans', 'span': 1}]
-			records_list = User.objects.annotate(record_stat=Sum('record__distance')).exclude(record_stat=None).order_by('-record_stat')
-		elif type == 'fuel':
-			more['columns'] = [{'name': 'Użytkownik', 'span': 3}, {'name': 'Najmniejsze spalanie', 'span': 1}]
-			records_list = User.objects.annotate(record_stat=Sum('record__fuel_consumption')).exclude(record_stat=None).order_by('record_stat')
-	else:
-		return HttpResponseRedirect(reverse('index'))
-
-	record_paginator = Paginator(records_list, 10)
-	try:
-		more['records'] = record_paginator.page(page)
-	except PageNotAnInteger:
-		more['records'] = record_paginator.page(1)
-	except EmptyPage:
-		more['records'] = record_paginator.page(record_paginator.num_pages)
-	return render(request, 'android_obd/more.html',
-		{'more': more})	

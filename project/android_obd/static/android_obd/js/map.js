@@ -31,12 +31,16 @@
             //    x: -20
             //},
             xAxis: {
-                categories: km
+                categories: km,
+                tickInterval: 5,
+                tickmarkPlacement: 'on'
+
             },
             yAxis: {
-                //title: {
-                //    text: 'Temperature (°C)'
-                //},
+                title: {
+                    text: ''
+                },
+                min: 0,
                 plotLines: [{
                     value: 0,
                     width: 1,
@@ -54,11 +58,13 @@
             },
             series: [{
                 name: 'spalanie [l]',
-                data: spalanie
+                data: spalanie,
+                lineWidth : 0
             },
 	    {
 		name: "predkosc [km/h]",
-		data: predkosc
+		data: predkosc,
+		lineWidth : 0
 	    }],
 	    plotOptions: {
                 series: {
@@ -68,7 +74,7 @@
                             mouseOver: function() {
 				//infowindow.setContent(tmarker[this.x].icon.scale);
                 		//infowindow.open(map,tmarker[this.x]);
-				var y = id.indexOf(this.x);
+					var y = id.indexOf(this.x);
 				//infowindow.open(map,tmarker[y]);
            		 	tmarker[y].setAnimation(google.maps.Animation.BOUNCE);
 
