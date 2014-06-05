@@ -12,7 +12,7 @@ from android_obd.forms import MyUserCreationForm, UserNameChangeForm
 from android_obd.models import Record
 from django.views.generic import DetailView
 
-from django.middleware.csrf import get_token
+from django.middleware import csrf
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -30,10 +30,10 @@ class ProfileDetail(DetailView):
 	template_name = 'android_obd/profile_detail_view.html'
 
 def index(request):
-	most_added = User.objects.annotate(records_count = Count('record')).order_by('-records_count')[:5]
+	most_added = User.objects.annotate(records_count = Count('record')).exclude(records_count=0).order_by('-records_count')[:5]
 	last_added = Record.objects.all().order_by('-id')[:5]
-	longest_distance = User.objects.annotate(total_distance=Sum('record__distance')).order_by('-total_distance')[:5]
-	smallest_fuel_consumption = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).order_by('-total_fuel_consumption')[:5]
+	longest_distance = User.objects.annotate(total_distance=Sum('record__distance')).exclude(total_distance=None).order_by('-total_distance')[:5]
+	smallest_fuel_consumption = User.objects.annotate(total_fuel_consumption=Sum('record__fuel_consumption')).exclude(total_fuel_consumption=None).order_by('-total_fuel_consumption')[:5]
 	return render(request, 'android_obd/home.html', 
 		{'most_added': most_added,
 		 'last_added': last_added,
@@ -248,6 +248,9 @@ def more(request, type, page=1):
 
 def android_auth_test(request):
 	return render(request, 'android_obd/android_auth_test.html')
+
+def android_csrf(self):
+	return HttpResponse(csrf.get_token(request))
 
 def android_auth(request):
 	if request.method == 'POST':
