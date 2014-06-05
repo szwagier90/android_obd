@@ -23,20 +23,20 @@
 
 		for(i=0; i<aaa.length; i++)
 		{
-			timestamp.push(Highcharts.dateFormat('%e. %b %Y, %H:%M:%S',aaa[i].time));
+			timestamp.push(Highcharts.dateFormat('%H:%M:%S',aaa[i].time));
 		}
         $('#container').highcharts({
             title: {
                 text: 'Przeglad trasy',
                 x: -20 //center
             },
-            //subtitle: {
-            //    text: 'podtytul',
-            //    x: -20
-            //},
+            subtitle: {
+                text: Highcharts.dateFormat('%e. %b %Y, %H:%M:%S',aaa[0].time)+'-'+Highcharts.dateFormat('%e. %b %Y, %H:%M:%S',aaa[timestamp.length-1].time),
+                x: -20
+            },
             xAxis: {
                 categories: timestamp,
-                tickInterval: 5,
+                tickInterval: 0,
                 type: 'datetime',
                 tickmarkPlacement: 'on'
 

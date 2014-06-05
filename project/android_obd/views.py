@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from android_obd.forms import MyUserCreationForm, UserNameChangeForm
-from android_obd.models import Record
+from android_obd.models import Record, Measurement
 from django.views.generic import DetailView
 
 from django.middleware import csrf
@@ -176,18 +176,20 @@ def route(request, id=5):
 	for x in pomiar:
 		s = {}
 		s['id']=count
-		s['time']=x.timestamp
-		s['AccX'] = x.AccX
-		s['AccY'] = x.AccX
-		s['AccZ'] = x.AccZ
-		s['speed']=x.speed
-		s['rotation']=x.rotation
-		s['Z']=x.altitude
-		s['Y']=x.latitude
-		s['X']=x.longitude
+		s['time']=int(str(x.timestamp))
+	#	s['AccX'] = x.AccX
+	#	s['AccY'] = x.AccX
+	#	s['AccZ'] = x.AccZ
+		s['speed']=float(str(x.speed))
+	#	s['rotation']=x.rotation
+	#	s['Z']=x.altitude
+		s['X']=str(x.latitude)
+		s['Y']=str(x.longitude)
 		lista.append(s)
-		count++
-	
+		count+=1
+
+
+	print lista
 #	lista =  [
 #        {'id':0,'X':37.60,'Y':-121.44,'spalanie':4,'predkosc':0},
 #        {'id':1,'X':37.7699298,'Y':-118.4469157,'spalanie': 4,'predkosc':78},
@@ -198,12 +200,12 @@ def route(request, id=5):
 #        ]
 		
 	record = Record.objects.get(id=id)
-	json_list = simplejson.dumps(lista)
+#	json_list = simplejson.dumps(lista)
 #	data = serializers.serialize("json", Record.objects.filter(id=id),fields=('video_link','user','distance'))
 #	print data
 
 
-	return render(request, 'android_obd/route.html', {"wsp":json_list, "record":record})
+	return render(request, 'android_obd/route.html', {"wsp":lista, "record":record})
 
 @login_required
 def profiles(request):
