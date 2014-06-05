@@ -25,6 +25,9 @@ import re
 
 import sys
 
+from django.core import serializers
+
+
 class ProfileDetail(DetailView):
 	model = User
 	template_name = 'android_obd/profile_detail_view.html'
@@ -152,20 +155,38 @@ def route(request, id=5):
 
 
 
-	lista = []
-	for i in range(50):
-		s = {}
-		if i>0:
-			s['km']=round(random.uniform(lista[i-1]['km'],lista[i-1]['km']+2),1)
-		else:
-			s['km']=2
-		s['id']=i
-		s['X']=random.uniform(-90, 90)
-		s['Y']=random.uniform(-90, 90)
-		s['spalanie']=random.uniform(0, 20)
-		s['predkosc']=random.uniform(0, 300)
-		lista.append(s)
+#	lista = []
+#	for i in range(50):
+#		s = {}
+#		if i>0:
+#			s['km']=round(random.uniform(lista[i-1]['km'],lista[i-1]['km']+2),1)
+#		else:
+#			s['km']=2
+#		s['id']=i
+#		s['X']=random.uniform(-90, 90)
+#		s['Y']=random.uniform(-90, 90)
+#		s['spalanie']=random.uniform(-20, 20)
+#		s['predkosc']=random.uniform(0, 300)
+#		lista.append(s)
 	
+	lista = []
+	count = 0
+	pomiar = Measurement.objects.filter(record__id=id)
+#	print pomiar
+	for x in pomiar:
+		s = {}
+		s['id']=count
+		s['time']=x.timestamp
+		s['AccX'] = x.AccX
+		s['AccY'] = x.AccX
+		s['AccZ'] = x.AccZ
+		s['speed']=x.speed
+		s['rotation']=x.rotation
+		s['Z']=x.altitude
+		s['Y']=x.latitude
+		s['X']=x.longitude
+		lista.append(s)
+		count++
 	
 #	lista =  [
 #        {'id':0,'X':37.60,'Y':-121.44,'spalanie':4,'predkosc':0},
@@ -178,8 +199,11 @@ def route(request, id=5):
 		
 	record = Record.objects.get(id=id)
 	json_list = simplejson.dumps(lista)
-	
-	return render(request, 'android_obd/route.html', {"wsp":json_list, "record":record })
+#	data = serializers.serialize("json", Record.objects.filter(id=id),fields=('video_link','user','distance'))
+#	print data
+
+
+	return render(request, 'android_obd/route.html', {"wsp":json_list, "record":record})
 
 @login_required
 def profiles(request):
