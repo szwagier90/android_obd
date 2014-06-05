@@ -19,18 +19,14 @@ class Record(models.Model):
 	def __unicode__(self):
 		return "%s (%d km): %s link:(%s) fuel:%d" % (self.user, self.distance, self.tags.all(), self.video_link, self.fuel_consumption)
 
-class MeasurementType(models.Model):
-	name = models.CharField(max_length=100)
-	description = models.TextField()
-
-	def __unicode__(self):
-		return "%s: %s" % (self.name, self.description)
-
 class Measurement(models.Model):
 	record = models.ForeignKey(Record)
-	measurement_type = models.ForeignKey(MeasurementType)
-	timestamp = models.DateTimeField()
-	value = models.BinaryField()
-
-	def __unicode__(self):
-		return "%s: %s" % (self.timestamp, self.measurement_type.name)
+	timestamp = models.IntegerField()
+	AccX = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+	AccY = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+	AccZ = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+	speed = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+	rotation = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+	altitude = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+	longitude = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+	latitude = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
