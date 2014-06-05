@@ -168,7 +168,12 @@ def route(request, id=5):
 #		s['spalanie']=random.uniform(-20, 20)
 #		s['predkosc']=random.uniform(0, 300)
 #		lista.append(s)
-	
+	def f(x):
+		if x != None:
+			return float(str(x))
+		else:
+			return 'brak danych'
+
 	lista = []
 	count = 0
 	pomiar = Measurement.objects.filter(record__id=id)
@@ -177,14 +182,14 @@ def route(request, id=5):
 		s = {}
 		s['id']=count
 		s['time']=int(str(x.timestamp))
-	#	s['AccX'] = x.AccX
-	#	s['AccY'] = x.AccX
-	#	s['AccZ'] = x.AccZ
-		s['speed']=float(str(x.speed))
-	#	s['rotation']=x.rotation
-	#	s['Z']=x.altitude
-		s['X']=str(x.latitude)
-		s['Y']=str(x.longitude)
+		s['AccX'] = f(x.AccX)
+		s['AccY'] = f(x.AccY)
+		s['AccZ'] = f(x.AccZ)
+		s['speed']=f(x.speed)
+		s['rotation']=f(x.rotation)
+		s['Z']=f(x.altitude)
+		s['X']=f(x.latitude)
+		s['Y']=f(x.longitude)
 		lista.append(s)
 		count+=1
 

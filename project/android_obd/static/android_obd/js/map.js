@@ -10,14 +10,38 @@
 	var predkosc=[];
 	var id=[];
 	var timestamp=[];
+	var AccX =[];
+	var AccY =[];
+	var AccZ =[];
+	var rotation = [];
+	var Z = [];
+	var zakres;
+	zakres = (aaa.length/10);
 
 	for(i=0; i<aaa.length; i++)
 	{
 		id.push(aaa[i].id);
-		//if(aaa[i].spalanie>=0) spalanie.push(aaa[i].spalanie);
-		//else spalanie.push(null);
-		predkosc.push(aaa[i].speed);
-//	alert(aaa[i].id)
+		//predkosc.push(aaa[i].speed);
+		//if(aaa[i].AccX=='None')
+		//	{AccX.push(null);}
+		//else{AccX.push(aaa[i].AccX);}
+		test(aaa[i].speed,predkosc);
+		test(aaa[i].AccX,AccX);
+		test(aaa[i].AccY,AccY);
+		test(aaa[i].AccZ,AccZ);
+		test(aaa[i].rotation,rotation);
+		test(aaa[i].altitude,Z);
+		//AccY.push(aaa[i].AccY);
+		//AccZ.push(aaa[i].AccZ);
+		//rotation.push(aaa[i].rotation);
+		//Z.push(aaa[i].altitude);
+	}
+
+	function test(x, tab){
+
+		if(x=='brak danych')
+			{tab.push(null);}
+		else{tab.push(x);}		
 	}
 	$(function () {
 
@@ -36,7 +60,7 @@
             },
             xAxis: {
                 categories: timestamp,
-                tickInterval: 0,
+                tickInterval: zakres,
                 type: 'datetime',
                 tickmarkPlacement: 'on'
 
@@ -45,7 +69,7 @@
                 title: {
                     text: ''
                 },
-                min: 0,
+                //min: 0,
                 plotLines: [{
                     value: 0,
                     width: 1,
@@ -62,16 +86,36 @@
                 borderWidth: 0
             },
             series: [
-            /*{
-                name: 'spalanie [l]',
-                data: spalanie,
+            {
+                name: 'PrzyspieszenieX',
+                data: AccX,
                 lineWidth : 1
-            },*/
+            },
 	    	{
-				name: "predkosc [km/h]",
+				name: "predkosc [m/s]",
 				data: predkosc,
 				lineWidth : 1
-	    	}],
+	    	},
+	    	{
+                name: 'PrzyspieszenieY',
+                data: AccY,
+                lineWidth : 1
+            },
+            {
+                name: 'PrzyspieszenieZ',
+                data: AccZ,
+                lineWidth : 1
+            },
+            {
+                name: 'Kąt względem PN',
+                data: rotation,
+                lineWidth : 1
+            },
+            {
+                name: 'Wysokość n.p.m.',
+                data: Z,
+                lineWidth : 1
+            }],
 	    plotOptions: {
                 series: {
                     cursor: 'pointer',
@@ -91,7 +135,7 @@
                         }
                    },
                    marker: {
-                   	radius: 4,
+                   	radius: 3,
             		enabled: true
         		},
         		connectNulls: true
@@ -106,7 +150,7 @@
 		directionsDisplay = new google.maps.DirectionsRenderer();
         var mapOptions = {
           center: new google.maps.LatLng(aaa[0].X, aaa[0].Y),
-          zoom: 6
+          zoom: 12
         };
         map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
@@ -136,12 +180,12 @@
 			var way = new google.maps.LatLng(aaa.X, aaa.Y);
 			//var spalanie = aaa.spalanie;
 			var predkosc = aaa.speed;
-			
+			var przyspieszenie = aaa.AccX;
 			var marker = new google.maps.Marker({
 			position: way,
 			icon: {
 				path: google.maps.SymbolPath.CIRCLE,
-				scale: 3
+				scale: 2
 			},
 			draggable: false,
 			map: map,
@@ -150,7 +194,24 @@
 			tmarker.push(marker);
 
 		
-            var contentString = '<p>wspolrzedne: '+way+'<p> predkosc: '+predkosc;
+            var contentString = '<div style="width:250px; height:100px;">' +
+    '<table border="0" cellpadding="0" cellspacing="0">' +
+    '<tr>'+
+    '<th scope="row">Wysokość n.p.m.: </th>' +
+    '<td> '+aaa.Z+' [m]</td>' +
+    '</tr>' +
+    '<tr>'+
+    '<th scope="row">Predkosc:</th>' +
+    '<td>'+ predkosc +' [m/s]</td>' +
+    '</tr>' +
+    '<tr>'+
+    '<th scope="row">Przyspieszenie:</th>' +
+    '<td>'+ przyspieszenie +' [m/s2]</td>' +
+    '</tr>' +
+    '</table></div>';
+
+
+            //'<p>wspolrzedne: ('+aaa.X +','+aaa.Y+')'+'<p> predkosc: '+predkosc+'<br>';
 
             google.maps.event.addListener(tmarker[aaa.id], "mouseover", function () {
 			infowindow.setContent(contentString);
