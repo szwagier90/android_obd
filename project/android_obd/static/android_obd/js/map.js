@@ -30,7 +30,7 @@
 		test(aaa[i].AccY,AccY);
 		test(aaa[i].AccZ,AccZ);
 		test(aaa[i].rotation,rotation);
-		test(aaa[i].altitude,Z);
+		test(aaa[i].Z,Z);
 		//AccY.push(aaa[i].AccY);
 		//AccZ.push(aaa[i].AccZ);
 		//rotation.push(aaa[i].rotation);
@@ -184,6 +184,7 @@
 			//var spalanie = aaa.spalanie;
 			var predkosc = aaa.speed;
 			var przyspieszenie = aaa.AccX;
+
 			if(aaa.X!=0){
 				var marker = new google.maps.Marker({
 				position: way,
@@ -209,7 +210,6 @@
 			}
 			tmarker.push(marker);
 
-		
             var contentString = '<div style="width:250px; height:100px;">' +
     '<table border="0" cellpadding="0" cellspacing="0">' +
     '<tr>'+
