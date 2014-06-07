@@ -153,21 +153,6 @@ def route(request, id=5):
 		
 		record.save()
 
-
-
-#	lista = []
-#	for i in range(50):
-#		s = {}
-#		if i>0:
-#			s['km']=round(random.uniform(lista[i-1]['km'],lista[i-1]['km']+2),1)
-#		else:
-#			s['km']=2
-#		s['id']=i
-#		s['X']=random.uniform(-90, 90)
-#		s['Y']=random.uniform(-90, 90)
-#		s['spalanie']=random.uniform(-20, 20)
-#		s['predkosc']=random.uniform(0, 300)
-#		lista.append(s)
 	def f(x):
 		if x != None:
 			return float(str(x))
@@ -177,7 +162,7 @@ def route(request, id=5):
 	lista = []
 	count = 0
 	pomiar = Measurement.objects.filter(record__id=id)
-#	print pomiar
+
 	for x in pomiar:
 		s = {}
 		s['id']=count
@@ -193,22 +178,7 @@ def route(request, id=5):
 		lista.append(s)
 		count+=1
 
-
-	print lista
-#	lista =  [
-#        {'id':0,'X':37.60,'Y':-121.44,'spalanie':4,'predkosc':0},
-#        {'id':1,'X':37.7699298,'Y':-118.4469157,'spalanie': 4,'predkosc':78},
-#        {'id':2,'X':3.7699298,'Y':-120.4469157,'spalanie': 7,'predkosc':56},
-#        {'id':3,'X':38.7699298,'Y':-120.4469157,'spalanie': 8,'predkosc':30},
-#        {'id':4,'X':37.7699298,'Y':-122.4469157,'spalanie':12},
-#        {'id':5,'X':45.7699298,'Y':-122.4469157,'spalanie':21,'predkosc':185}
-#        ]
-		
 	record = Record.objects.get(id=id)
-#	json_list = simplejson.dumps(lista)
-#	data = serializers.serialize("json", Record.objects.filter(id=id),fields=('video_link','user','distance'))
-#	print data
-
 
 	return render(request, 'android_obd/route.html', {"wsp":lista, "record":record})
 
