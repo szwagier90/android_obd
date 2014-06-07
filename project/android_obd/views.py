@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from android_obd.forms import MyUserCreationForm, UserNameChangeForm
 from android_obd.models import Record, Measurement
+from android_obd.models import Record, Tag
 from django.views.generic import DetailView
 
 from django.middleware import csrf
@@ -247,7 +248,7 @@ def more(request, type, page=1):
 	return render(request, 'android_obd/more.html',
 		{'more': more})	
 
-def android_auth_test(request):
+def android_test(request):
 	return render(request, 'android_obd/android_auth_test.html')
 
 def android_csrf(self):
@@ -282,3 +283,71 @@ def android_auth(request):
 		return HttpResponse('LOGIN_KEY_NOT_FOUND')
 	else:
 		return HttpResponse('NOT_POST')
+
+def android_upload(request):
+	if request.method != 'POST':
+		return HttpResponse('NOT_POST')
+	print >>sys.stderr, 'POST'
+	
+	record_json = request.POST.get('record')
+	if not record_json:
+		return HttpResponse('NO_RECORD_IN_POST')
+	print >>sys.stderr, 'RECORD IN POST'
+
+	record_data = json.loads(record_json)
+	if not record_data:
+		return HttpResponse('INVALID_RECORD_JSON')
+	print >>sys.stderr, 'RECORD JSON VALID'
+
+	username = record_data.get('username')
+	if not username:
+		return HttpResponse('NO_USERNAME_IN_RECORD_JSON')
+	print >>sys.stderr, 'USERNAME IN RECORD JSON'
+
+	try:
+		user = User.objects.get(username=username)
+	except User.DoesNotExist:
+		return HttpResponse('USER_DOES_NOT_EXIST')
+	else:
+		print >>sys.stderr, 'USERNAME "%s" IN RECORD JSON' % user
+
+	distance = record_data.get('distance')
+	if not distance:
+		return HttpResponse('NO_DISTANCE_IN_RECORD_JSON')
+	print >>sys.stderr, 'DISTANCE "%d" IN RECORD JSON' % distance
+
+	public = record_data.get('public', False)
+	print >>sys.stderr, 'PUBLIC "%s" IN RECORD JSON' % public
+
+	measurements_json = request.POST.get('measurements')
+	if not measurements_json:
+		return HttpResponse('NO_MEASUREMENTS_IN_POST')
+	print >>sys.stderr, 'MEASUREMENTS IN POST'
+
+	measurements = json.loads(measurements_json)
+	if not measurements:
+		return HttpResponse('INVALID_MEASUREMENT_JSON')
+	print >>sys.stderr, 'MEASUREMENT JSON VALID'
+	
+	r = Record(user=user, distance=distance, fuel_consumption=0, public=public)
+	r.save()
+	print >>sys.stderr, r
+
+	tags = record_data.get('tags')
+	if tags:
+		print >>sys.stderr, 'TAGS "%s" IN RECORD JSON' % tags
+		for tag in tags:
+			t = Tag.objects.get_or_create(name=tag)
+			r.tags.add(t[0])
+		r.save()
+		print >>sys.stderr, r
+	else:
+		print >>sys.stderr, 'NO TAGS IN RECORD' % public
+
+#	for measurement in measurements:
+#		print >>sys.stderr, "timestamp: %d" % measurement['timestamp']
+#		print >>sys.stderr, measurement['measurements']
+#		for key, value in measurement['measurements'].iteritems():
+#			print >>sys.stderr, "%s: %s" % (key, value)
+#		print >>sys.stderr, "\n"
+	return HttpResponse("%s" % (measurements[0]))
