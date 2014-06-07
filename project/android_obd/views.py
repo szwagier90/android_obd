@@ -9,8 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from android_obd.forms import MyUserCreationForm, UserNameChangeForm
-from android_obd.models import Record, Measurement
-from android_obd.models import Record, Tag
+from android_obd.models import Record, Tag, Measurement
 from django.views.generic import DetailView
 
 from django.middleware import csrf
