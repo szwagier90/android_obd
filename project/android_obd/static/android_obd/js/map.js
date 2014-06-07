@@ -147,10 +147,13 @@
 
 	  
       function initialize() {
+      	if(aaa.length%2==0) center_point=aaa.length/2;
+      	else center_point=(aaa.length-1)/2;
+      	
 		directionsDisplay = new google.maps.DirectionsRenderer();
         var mapOptions = {
-          center: new google.maps.LatLng(aaa[0].X, aaa[0].Y),
-          zoom: 12
+          center: new google.maps.LatLng(aaa[center_point].X, aaa[center_point].Y),
+          zoom: 15
         };
         map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
@@ -181,16 +184,29 @@
 			//var spalanie = aaa.spalanie;
 			var predkosc = aaa.speed;
 			var przyspieszenie = aaa.AccX;
-			var marker = new google.maps.Marker({
-			position: way,
-			icon: {
-				path: google.maps.SymbolPath.CIRCLE,
-				scale: 2
-			},
-			draggable: false,
-			map: map,
-			animation: google.maps.Animation.DROP
-			});
+			if(aaa.X!=0){
+				var marker = new google.maps.Marker({
+				position: way,
+				icon: {
+					path: google.maps.SymbolPath.CIRCLE,
+					scale: 2
+				},
+				draggable: false,
+				map: map,
+				animation: google.maps.Animation.DROP
+				});
+			}else{
+				var marker = new google.maps.Marker({
+				position: way,
+				icon: {
+					path: google.maps.SymbolPath.CIRCLE,
+					scale: 0
+				},
+				draggable: false,
+				map: map,
+				animation: google.maps.Animation.DROP
+				});
+			}
 			tmarker.push(marker);
 
 		

@@ -158,6 +158,12 @@ def route(request, id=5):
 			return float(str(x))
 		else:
 			return 'brak danych'
+	
+	def wsp(x):
+        	if x != None:
+        		return float(str(x))
+        	else:
+        		return 0.0 
 
 	lista = []
 	count = 0
@@ -173,8 +179,8 @@ def route(request, id=5):
 		s['speed']=f(x.speed)
 		s['rotation']=f(x.rotation)
 		s['Z']=f(x.altitude)
-		s['X']=f(x.latitude)
-		s['Y']=f(x.longitude)
+		s['X']=wsp(x.latitude)
+		s['Y']=wsp(x.longitude)
 		lista.append(s)
 		count+=1
 
