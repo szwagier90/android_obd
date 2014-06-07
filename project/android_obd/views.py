@@ -343,10 +343,23 @@ def android_upload(request):
 	else:
 		print >>sys.stderr, 'NO TAGS IN RECORD' % public
 
-#	for measurement in measurements:
-#		print >>sys.stderr, "timestamp: %d" % measurement['timestamp']
-#		print >>sys.stderr, measurement['measurements']
-#		for key, value in measurement['measurements'].iteritems():
-#			print >>sys.stderr, "%s: %s" % (key, value)
-#		print >>sys.stderr, "\n"
-	return HttpResponse("%s" % (measurements[0]))
+	for measurement in measurements:
+		timestamp = measurement.get('timestamp')
+		if not timestamp:
+			return HttpResponse('ERROR_TIMESTAMP_NOT_FOUND')
+		
+		a_measurement = measurement.get('measurements')
+		if not a_measurement:
+			return HttpResponse('ERROR_MEASUREMENT_NOT_FOUND')
+		AccX = a_measurement.get('AccX')
+		AccY = a_measurement.get('AccY')
+		AccZ = a_measurement.get('AccZ')
+		speed = a_measurement.get('speed')
+		rotation = a_measurement.get('rotation')
+		altitude = a_measurement.get('altitude')
+		longitude = a_measurement.get('longitude')
+		latitude = a_measurement.get('latitude')
+
+		m = Measurement(timestamp=timestamp, record=r, AccX=AccX, AccY=AccY, AccZ=AccZ, speed=speed, rotation=rotation, altitude=altitude, longitude=longitude, latitude=latitude)
+		m.save()
+	return HttpResponse('RECORD_SAVED')
