@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from android_obd.forms import MyUserCreationForm, UserNameChangeForm
 from android_obd.models import Record, Tag, Measurement
 from django.views.generic import DetailView
+from django.views.decorators.csrf import csrf_exempt
 
 from django.middleware import csrf
 from django.utils import simplejson
@@ -259,6 +260,7 @@ def android_test(request):
 def android_csrf(self):
 	return HttpResponse(csrf.get_token(request))
 
+@csrf_exempt
 def android_auth(request):
 	if request.method == 'POST':
 		json_login_data = request.POST.get('login')
@@ -289,6 +291,7 @@ def android_auth(request):
 	else:
 		return HttpResponse('NOT_POST')
 
+@csrf_exempt
 def android_upload(request):
 	if request.method != 'POST':
 		return HttpResponse('NOT_POST')
@@ -349,10 +352,24 @@ def android_upload(request):
 	else:
 		print >>sys.stderr, 'NO TAGS IN RECORD' % public
 
-#	for measurement in measurements:
-#		print >>sys.stderr, "timestamp: %d" % measurement['timestamp']
-#		print >>sys.stderr, measurement['measurements']
-#		for key, value in measurement['measurements'].iteritems():
-#			print >>sys.stderr, "%s: %s" % (key, value)
-#		print >>sys.stderr, "\n"
-	return HttpResponse("%s" % (measurements[0]))
+	for measurement in measurements:
+		timestamp = measurement.get('timestamp')
+		if not timestamp:
+			return HttpResponse('ERROR_TIMESTAMP_NOT_FOUND')
+		
+		a_measurement = measurement.get('measurements')
+		if not a_measurement:
+			return HttpResponse('ERROR_MEASUREMENT_NOT_FOUND')
+	
+		AccX = a_measurement.get('AccX')
+		AccY = a_measurement.get('AccY')
+		AccZ = a_measurement.get('AccZ')
+		speed = a_measurement.get('speed')
+		rotation = a_measurement.get('rotation')
+		altitude = a_measurement.get('altitude')
+		longitude = a_measurement.get('longitude')
+		latitude = a_measurement.get('latitude')
+		m = Measurement(timestamp=timestamp, record=r, AccX=AccX, AccY=AccY, AccZ=AccZ, speed=speed, rotation=rotation, altitude=altitude, longitude=longitude, latitude=latitude)
+		m.save()
+		print >>sys.stderr, m
+	return HttpResponse('UPLOAD_OK')
